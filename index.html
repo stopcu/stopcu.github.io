@@ -1,637 +1,1308 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlaceRemind - Destek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <title>PlaceRemind — Location reminders that just work</title>
+    <meta name="description" content="PlaceRemind tracks the places that matter and notifies you the moment you arrive or leave. iOS app with on-device, battery-friendly geofencing.">
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <link rel="apple-touch-icon" href="assets/icon.png">
+    <meta property="og:title" content="PlaceRemind — Location reminders that just work">
+    <meta property="og:description" content="Get notified the moment you arrive or leave the places that matter. Private, on-device, battery-friendly.">
+    <meta property="og:image" content="assets/icon.png">
+    <meta property="og:type" content="website">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; color: #333; line-height: 1.6; }
-        h1 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        h2 { font-size: 1.1em; margin-top: 24px; }
-        h3 { font-size: 1em; margin-top: 18px; margin-bottom: 4px; }
-        p { font-size: 0.95em; color: #555; }
-        ul { font-size: 0.95em; color: #555; }
-        .date { font-size: 0.8em; color: #999; }
-        .lang-section { display: none; }
-        .lang-section.active { display: block; }
-        .lang-switcher, .view-switcher { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-        .view-switcher { margin-bottom: 20px; }
-        .lang-switcher button, .view-switcher button {
-            padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px;
-            background: #f5f5f5; cursor: pointer; font-size: 0.9em; color: #555;
-            transition: all 0.2s;
+        :root {
+            --accent: #007AFF;
+            --accent-strong: #0a84ff;
+            --premium: #ff9f0a;
+            --bg: #ffffff;
+            --bg-soft: #f5f5f7;
+            --bg-elev: #ffffff;
+            --text: #1d1d1f;
+            --text-soft: #515154;
+            --text-mute: #86868b;
+            --border: rgba(0,0,0,0.08);
+            --border-strong: rgba(0,0,0,0.14);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-md: 0 6px 24px rgba(0,0,0,0.08), 0 24px 60px rgba(0,0,0,0.10);
+            --shadow-phone: 0 30px 80px rgba(0,0,0,0.18), 0 10px 24px rgba(0,0,0,0.12);
+            --grad-hero: radial-gradient(1200px 600px at 80% -10%, rgba(0,122,255,0.18), transparent 60%),
+                         radial-gradient(900px 500px at 0% 10%, rgba(255,159,10,0.10), transparent 60%);
+            --nav-bg: rgba(255,255,255,0.72);
         }
-        .lang-switcher button:hover, .view-switcher button:hover { background: #e8e8e8; }
-        .lang-switcher button.active, .view-switcher button.active { background: #007AFF; color: #fff; border-color: #007AFF; }
-        .support-section, .privacy-section { display: none; }
-        .support-section.active, .privacy-section.active { display: block; }
+        :root[data-theme="dark"] {
+            --bg: #0b0b0f;
+            --bg-soft: #14141a;
+            --bg-elev: #1c1c22;
+            --text: #f5f5f7;
+            --text-soft: #c7c7cc;
+            --text-mute: #8e8e93;
+            --border: rgba(255,255,255,0.08);
+            --border-strong: rgba(255,255,255,0.16);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.4);
+            --shadow-md: 0 6px 24px rgba(0,0,0,0.5), 0 24px 60px rgba(0,0,0,0.5);
+            --shadow-phone: 0 30px 80px rgba(0,0,0,0.6), 0 10px 24px rgba(0,0,0,0.5);
+            --grad-hero: radial-gradient(1200px 600px at 80% -10%, rgba(10,132,255,0.30), transparent 60%),
+                         radial-gradient(900px 500px at 0% 10%, rgba(255,159,10,0.14), transparent 60%);
+            --nav-bg: rgba(11,11,15,0.72);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root[data-theme="auto"] {
+                --bg: #0b0b0f;
+                --bg-soft: #14141a;
+                --bg-elev: #1c1c22;
+                --text: #f5f5f7;
+                --text-soft: #c7c7cc;
+                --text-mute: #8e8e93;
+                --border: rgba(255,255,255,0.08);
+                --border-strong: rgba(255,255,255,0.16);
+                --shadow-sm: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.4);
+                --shadow-md: 0 6px 24px rgba(0,0,0,0.5), 0 24px 60px rgba(0,0,0,0.5);
+                --shadow-phone: 0 30px 80px rgba(0,0,0,0.6), 0 10px 24px rgba(0,0,0,0.5);
+                --grad-hero: radial-gradient(1200px 600px at 80% -10%, rgba(10,132,255,0.30), transparent 60%),
+                             radial-gradient(900px 500px at 0% 10%, rgba(255,159,10,0.14), transparent 60%);
+                --nav-bg: rgba(11,11,15,0.72);
+            }
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color .3s ease, color .3s ease;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        img { max-width: 100%; display: block; }
+
+        /* Layout */
+        .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+        /* Nav */
+        .nav {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            display: flex; align-items: center; gap: 16px;
+            height: 56px;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 600; font-size: 17px; color: var(--text);
+        }
+        .brand img { width: 28px; height: 28px; border-radius: 7px; }
+        .nav-links { display: flex; gap: 4px; margin-left: 8px; flex: 1; }
+        .nav-links a {
+            color: var(--text-soft); font-size: 14px; padding: 8px 12px;
+            border-radius: 8px; text-decoration: none; transition: background-color .15s ease, color .15s ease;
+        }
+        .nav-links a:hover { background: var(--bg-soft); color: var(--text); text-decoration: none; }
+        .nav-links a.active { color: var(--accent); }
+        .nav-controls { display: flex; align-items: center; gap: 8px; }
+        .ctrl {
+            background: transparent; border: 1px solid var(--border-strong); color: var(--text);
+            padding: 6px 10px; border-radius: 8px; font-size: 13px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: background-color .15s ease, border-color .15s ease;
+            font-family: inherit;
+        }
+        .ctrl:hover { background: var(--bg-soft); }
+        .ctrl select {
+            background: transparent; border: 0; color: var(--text); font: inherit;
+            outline: none; padding-right: 4px; cursor: pointer;
+        }
+        .nav-cta {
+            background: var(--accent); color: #fff; border: 0;
+            padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+            cursor: pointer; text-decoration: none; transition: transform .1s ease, background-color .15s ease;
+            font-family: inherit;
+        }
+        .nav-cta:hover { background: var(--accent-strong); text-decoration: none; }
+        .nav-cta:active { transform: scale(0.97); }
+        .menu-btn { display: none; }
+
+        /* View toggling */
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            padding: 64px 0 80px;
+            background: var(--grad-hero);
+            overflow: hidden;
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px;
+            align-items: center;
+        }
+        .eyebrow {
+            display: inline-block;
+            font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 14px;
+        }
+        .hero-title {
+            font-size: clamp(40px, 6vw, 64px);
+            line-height: 1.05; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 18px;
+        }
+        .hero-sub {
+            font-size: clamp(17px, 1.6vw, 20px); color: var(--text-soft);
+            margin: 0 0 28px; max-width: 560px;
+        }
+        .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .btn-primary {
+            background: var(--accent); color: #fff; padding: 14px 22px; border-radius: 12px;
+            font-weight: 600; border: 0; cursor: pointer; font-size: 15px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+            transition: background-color .15s ease, transform .1s ease;
+            font-family: inherit;
+        }
+        .btn-primary:hover { background: var(--accent-strong); text-decoration: none; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-ghost {
+            background: transparent; color: var(--text); padding: 14px 22px; border-radius: 12px;
+            font-weight: 500; border: 1px solid var(--border-strong); cursor: pointer; font-size: 15px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            transition: background-color .15s ease;
+            font-family: inherit;
+        }
+        .btn-ghost:hover { background: var(--bg-soft); text-decoration: none; }
+
+        .hero-phone-wrap {
+            display: flex; justify-content: center; align-items: center;
+            position: relative;
+        }
+        /* Phone frame */
+        .phone {
+            position: relative;
+            width: 300px;
+            aspect-ratio: 1320/2868;
+            background: #0a0a0a;
+            border-radius: 42px;
+            padding: 10px;
+            box-shadow: var(--shadow-phone);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .phone::before {
+            content: '';
+            position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+            width: 92px; height: 28px; background: #000; border-radius: 16px;
+            z-index: 2;
+        }
+        .phone img {
+            width: 100%; height: 100%;
+            border-radius: 32px;
+            object-fit: cover; display: block;
+        }
+        .hero-phone { transform: rotate(-2deg); }
+        .hero-blur-1 {
+            position: absolute; width: 380px; height: 380px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,122,255,0.4), transparent 70%);
+            filter: blur(40px); top: 20%; right: -80px; z-index: 0; pointer-events: none;
+        }
+
+        /* Section */
+        section.feature {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+        .feat-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+            align-items: center;
+        }
+        .feat-grid.reverse > .feat-text { order: 2; }
+        .feat-title {
+            font-size: clamp(32px, 4.2vw, 46px);
+            line-height: 1.1; letter-spacing: -0.02em; font-weight: 700;
+            margin: 0 0 16px;
+        }
+        .feat-desc {
+            font-size: 17px; color: var(--text-soft); margin: 0; max-width: 540px;
+        }
+        .feat-phone-wrap { display: flex; justify-content: center; }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity .8s ease, transform .8s ease;
+            will-change: opacity, transform;
+        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            html { scroll-behavior: auto; }
+        }
+
+        /* Pricing */
+        .pricing { padding: 100px 0; background: var(--bg-soft); }
+        .pricing-head { text-align: center; margin-bottom: 56px; }
+        .pricing-head h2 {
+            font-size: clamp(32px, 4.2vw, 46px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 700;
+            margin: 0 0 12px;
+        }
+        .pricing-head p { font-size: 17px; color: var(--text-soft); max-width: 560px; margin: 0 auto; }
+        .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 880px; margin: 0 auto; }
+        .plan {
+            background: var(--bg-elev);
+            border: 1px solid var(--border);
+            border-radius: 20px; padding: 32px;
+            display: flex; flex-direction: column; gap: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-md); position: relative; }
+        .plan.featured::after {
+            content: '★'; position: absolute; top: -10px; right: 24px;
+            background: var(--premium); color: #fff; padding: 4px 10px; border-radius: 999px;
+            font-size: 12px; font-weight: 700;
+        }
+        .plan-name { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-mute); margin: 0; }
+        .plan-price { display: flex; align-items: baseline; gap: 8px; }
+        .plan-price strong { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
+        .plan-price span { font-size: 14px; color: var(--text-mute); }
+        .plan ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+        .plan li { font-size: 15px; color: var(--text-soft); display: flex; gap: 10px; align-items: flex-start; }
+        .plan li::before {
+            content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0;
+        }
+        .plan.featured li::before { color: var(--premium); }
+
+        /* CTA banner */
+        .cta-band {
+            padding: 100px 0; text-align: center;
+        }
+        .cta-band h2 { font-size: clamp(28px, 3.6vw, 40px); margin: 0 0 16px; letter-spacing: -0.02em; font-weight: 700; line-height: 1.15; }
+        .cta-band p { color: var(--text-soft); font-size: 17px; margin: 0 0 28px; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 0; text-align: center;
+            color: var(--text-mute); font-size: 14px;
+        }
+        footer a { color: var(--text-soft); }
+
+        /* Support / Privacy / Contact pages */
+        .doc {
+            max-width: 760px; margin: 0 auto; padding: 56px 24px 80px;
+        }
+        .contact-card {
+            max-width: 560px; margin: 0 auto; padding: 64px 24px 96px;
+            text-align: center;
+        }
+        .contact-card .doc-pill { margin-bottom: 16px; }
+        .contact-card h1 {
+            font-size: clamp(32px, 4.2vw, 44px); line-height: 1.1; letter-spacing: -0.02em;
+            margin: 0 0 14px;
+        }
+        .contact-card p { color: var(--text-soft); font-size: 17px; margin: 0 0 28px; }
+        .contact-card .btn-primary { font-size: 16px; padding: 16px 28px; }
+        .contact-tip { font-size: 14px; color: var(--text-mute); margin-top: 20px; }
+        .doc h1 { font-size: 34px; letter-spacing: -0.01em; margin: 0 0 8px; }
+        .doc h2 { font-size: 20px; margin-top: 32px; margin-bottom: 8px; letter-spacing: -0.01em; }
+        .doc h3 { font-size: 17px; margin-top: 22px; margin-bottom: 6px; }
+        .doc p, .doc ul { color: var(--text-soft); }
+        .doc ul { padding-left: 22px; }
+        .doc .date { color: var(--text-mute); font-size: 13px; margin: 0 0 24px; }
+        .doc-pill {
+            display: inline-block; background: var(--bg-soft); color: var(--text-soft);
+            padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; margin-bottom: 14px;
+        }
+
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero { padding: 48px 0 56px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-phone-wrap { order: -1; }
+            .hero-blur-1 { display: none; }
+            section.feature { padding: 64px 0; }
+            .feat-grid { grid-template-columns: 1fr; gap: 40px; }
+            .feat-grid.reverse > .feat-text { order: 0; }
+            .feat-grid > .feat-text { text-align: center; margin: 0 auto; }
+            .feat-grid > .feat-text .feat-desc { margin: 0 auto; }
+            .pricing { padding: 64px 0; }
+            .plans { grid-template-columns: 1fr; }
+            .cta-band { padding: 64px 0; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex; flex-direction: column; gap: 0;
+                position: absolute; top: 56px; left: 0; right: 0;
+                background: var(--bg); border-bottom: 1px solid var(--border);
+                padding: 8px 16px;
+            }
+            .nav-links.open a { padding: 12px 8px; border-radius: 0; border-bottom: 1px solid var(--border); }
+            .nav-links.open a:last-child { border-bottom: 0; }
+            .menu-btn { display: inline-flex; }
+            .ctrl-label-text { display: none; }
+        }
+        @media (max-width: 480px) {
+            .phone { width: 240px; }
+            .hero-actions { flex-direction: column; align-items: stretch; }
+            .btn-primary, .btn-ghost { justify-content: center; }
+        }
     </style>
 </head>
 <body>
-    <div class="lang-switcher">
-        <button onclick="setLang('tr')" data-lang="tr">Türkçe</button>
-        <button onclick="setLang('en')" data-lang="en">English</button>
-        <button onclick="setLang('de')" data-lang="de">Deutsch</button>
-        <button onclick="setLang('fr')" data-lang="fr">Français</button>
-        <button onclick="setLang('es')" data-lang="es">Español</button>
-    </div>
-    <div class="view-switcher">
-        <button onclick="setView('support')" data-view="support" data-label-tr="Destek" data-label-en="Support" data-label-de="Hilfe" data-label-fr="Assistance" data-label-es="Soporte">Destek</button>
-        <button onclick="setView('privacy')" data-view="privacy" data-label-tr="Gizlilik" data-label-en="Privacy" data-label-de="Datenschutz" data-label-fr="Confidentialité" data-label-es="Privacidad">Gizlilik</button>
-    </div>
-
-    <!-- Turkish -->
-    <div id="tr" class="lang-section">
-        <div class="support-section">
-            <h1>PlaceRemind - Destek</h1>
-
-            <h2>Hakkında</h2>
-            <p>PlaceRemind, belirlediğiniz konumlara giriş ve çıkışlarınızı otomatik olarak takip eden bir konum hatırlatma uygulamasıdır. Eve, işe veya başka bir alana vardığınızda ya da oradan ayrıldığınızda bildirim alır, tüm geçmişinizi tek bir yerden görebilirsiniz.</p>
-
-            <h2>Nasıl Kullanılır?</h2>
-            <ul>
-                <li><strong>Konum Ekleme:</strong> "Konumlar" sekmesinden + tuşuna dokunarak haritada bir nokta seçin, isim ve yarıçap belirleyin.</li>
-                <li><strong>Bildirimler:</strong> Belirlediğiniz alana girdiğinizde veya çıktığınızda otomatik bildirim alırsınız.</li>
-                <li><strong>Geçmiş:</strong> "Geçmiş" sekmesinden tüm giriş/çıkış kayıtlarınızı görüntüleyebilirsiniz.</li>
-                <li><strong>Ayarlar:</strong> Tema, dil ve diğer tercihlerinizi "Ayarlar" sekmesinden değiştirebilirsiniz.</li>
-            </ul>
-
-            <h2>Sıkça Sorulan Sorular</h2>
-
-            <h3>Bildirimler gelmiyor, ne yapabilirim?</h3>
-            <p>PlaceRemind'in arka planda çalışabilmesi için aşağıdakileri kontrol edin:</p>
-            <ul>
-                <li>Cihaz Ayarları → PlaceRemind → Konum: <strong>"Her Zaman"</strong> seçili olmalı</li>
-                <li>Cihaz Ayarları → PlaceRemind → Bildirimler izinli olmalı</li>
-                <li>Cihaz Ayarları → Genel → Arka Planda Yenile açık olmalı</li>
-            </ul>
-
-            <h3>Pil tüketimi yüksek mi?</h3>
-            <p>Hayır. PlaceRemind, iOS'un sistem geofencing API'lerini kullanır. Bu yöntem GPS'i sürekli açık tutmadan, çok düşük pil tüketimiyle çalışır.</p>
-
-            <h3>Ücretsiz sürümün sınırları nelerdir?</h3>
-            <p>Ücretsiz sürümde en fazla 3 aktif konum tanımlayabilir ve yalnızca son 7 günlük geçmişi görüntüleyebilirsiniz. Ücretsiz sürümde reklamlar gösterilir.</p>
-
-            <h3>Premium ne sunar?</h3>
-            <ul>
-                <li>Sınırsız konum</li>
-                <li>Tüm geçmişe erişim</li>
-                <li>Reklamsız kullanım</li>
-            </ul>
-            <p>3 günlük ücretsiz deneme süresi mevcuttur. Aylık veya yıllık abonelik seçenekleri vardır.</p>
-
-            <h3>Premium aboneliğimi nasıl iptal ederim?</h3>
-            <p>iPhone Ayarları → [Adınız] → Abonelikler → PlaceRemind → "Aboneliği İptal Et". Abonelik yönetimi tamamen App Store üzerinden yapılır; uygulama içinden iptal işlemi yapılmaz.</p>
-
-            <h3>Verilerimi nasıl silerim?</h3>
-            <p>Tüm veriler yalnızca cihazınızda saklanır. Uygulama içinden konumlarınızı ve geçmiş kayıtlarınızı silebilir ya da uygulamayı kaldırarak tüm verileri kalıcı olarak yok edebilirsiniz.</p>
-
-            <h3>Konum verilerim paylaşılıyor mu?</h3>
-            <p>Hayır. Konum verileriniz hiçbir sunucuya gönderilmez ve hiçbir üçüncü tarafla paylaşılmaz. Detaylı bilgi için yukarıdaki "Gizlilik" sekmesine bakın.</p>
-
-            <h2>İletişim</h2>
-            <p>Soru, geri bildirim veya sorun bildirimi için: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-            <p>E-postanıza cihaz modelinizi ve iOS sürümünüzü eklerseniz size daha hızlı yardımcı olabiliriz.</p>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a href="#" class="brand" data-route="home">
+                <img src="assets/icon.png" alt="PlaceRemind">
+                <span>PlaceRemind</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#features" data-i18n="nav_features">Features</a>
+                <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+                <a href="#" data-route="support" data-i18n="nav_support">Support</a>
+                <a href="#" data-route="privacy" data-i18n="nav_privacy">Privacy</a>
+                <a href="#" data-route="contact" data-i18n="nav_contact">Contact</a>
+            </nav>
+            <div class="nav-controls">
+                <button class="ctrl menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+                <label class="ctrl" title="Language">
+                    <span aria-hidden="true">🌐</span>
+                    <select id="langSelect" aria-label="Language">
+                        <option value="en">English</option>
+                        <option value="tr">Türkçe</option>
+                        <option value="de">Deutsch</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                    </select>
+                </label>
+                <button class="ctrl" id="themeBtn" title="Theme">
+                    <span id="themeIcon" aria-hidden="true">◐</span>
+                    <span id="themeLabel" class="ctrl-label-text" data-i18n="theme_auto">System</span>
+                </button>
+                <a class="nav-cta" href="https://apps.apple.com/us/app/placeremind/id6762631106" target="_blank" rel="noopener" data-i18n="nav_cta">App Store</a>
+            </div>
         </div>
+    </header>
 
-        <div class="privacy-section">
-            <h1>PlaceRemind - Gizlilik Politikası</h1>
-            <p class="date">Son güncelleme: 5 Nisan 2026</p>
+    <main>
+        <!-- HOME VIEW -->
+        <section class="view view-home active" id="view-home">
+            <div class="hero">
+                <div class="container hero-grid">
+                    <div class="hero-text">
+                        <span class="eyebrow" data-i18n="hero_eyebrow">iOS Location Reminders</span>
+                        <h1 class="hero-title" data-i18n="hero_title">Never miss arriving home — or leaving work.</h1>
+                        <p class="hero-sub" data-i18n="hero_sub">PlaceRemind quietly tracks the places that matter and notifies you the moment you arrive or leave. All on-device, with battery-friendly geofencing.</p>
+                        <div class="hero-actions">
+                            <a class="btn-primary" href="https://apps.apple.com/us/app/placeremind/id6762631106" target="_blank" rel="noopener">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                                <span data-i18n="hero_cta_appstore">Download on the App Store</span>
+                            </a>
+                            <a class="btn-ghost" href="#features" data-i18n="hero_cta_features">See features</a>
+                        </div>
+                    </div>
+                    <div class="hero-phone-wrap">
+                        <div class="hero-blur-1"></div>
+                        <div class="phone hero-phone">
+                            <img class="screen" data-screen="map" src="assets/screenshots/en/map.png" alt="PlaceRemind map view">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <h2>Genel Bakış</h2>
-            <p>PlaceRemind, belirlediğiniz konumlara giriş ve çıkışlarınızı takip eden bir uygulamadır. Gizliliğinize önem veriyoruz.</p>
+            <a id="features"></a>
+            <section class="feature">
+                <div class="container feat-grid reverse">
+                    <div class="feat-text reveal">
+                        <span class="eyebrow" data-i18n="f_map_eyebrow">On the map</span>
+                        <h2 class="feat-title" data-i18n="f_map_title">Your places, drawn as zones.</h2>
+                        <p class="feat-desc" data-i18n="f_map_desc">Every geofence appears as a circle on the map. Custom icons for Home, Work and Other so you spot them in a glance.</p>
+                    </div>
+                    <div class="feat-phone-wrap reveal">
+                        <div class="phone"><img class="screen" data-screen="map" src="assets/screenshots/en/map.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Toplanan Veriler</h2>
-            <p>Uygulama aşağıdaki verileri toplar:</p>
-            <ul>
-                <li><strong>Konum verileri:</strong> Belirlediğiniz alanlar için giriş/çıkış kayıtları (yalnızca cihazınızda saklanır)</li>
-                <li><strong>Kullanıcı tercihleri:</strong> Tema ve uygulama ayarları (yalnızca cihazınızda saklanır)</li>
-                <li><strong>Reklam verileri:</strong> Uygulama içi reklamlar için anonim kullanım verileri (reklam sağlayıcısıyla paylaşılabilir)</li>
-            </ul>
+            <section class="feature">
+                <div class="container feat-grid">
+                    <div class="feat-text reveal">
+                        <span class="eyebrow" data-i18n="f_loc_eyebrow">Locations</span>
+                        <h2 class="feat-title" data-i18n="f_loc_title">Up to 20 places, fully under control.</h2>
+                        <p class="feat-desc" data-i18n="f_loc_desc">Toggle areas on or off, edit name, radius and icon, filter by category. Free keeps 3 active; Premium unlocks all 20.</p>
+                    </div>
+                    <div class="feat-phone-wrap reveal">
+                        <div class="phone"><img class="screen" data-screen="locations" src="assets/screenshots/en/locations.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Veri Saklama</h2>
-            <p>Tüm verileriniz yalnızca cihazınızda saklanır. Hiçbir veri harici bir sunucuya gönderilmez veya bulutta depolanmaz. Uygulamayı sildiğinizde tüm verileriniz kalıcı olarak silinir.</p>
+            <section class="feature">
+                <div class="container feat-grid reverse">
+                    <div class="feat-text reveal">
+                        <span class="eyebrow" data-i18n="f_history_eyebrow">History</span>
+                        <h2 class="feat-title" data-i18n="f_history_title">A clear timeline of every entry and exit.</h2>
+                        <p class="feat-desc" data-i18n="f_history_desc">Filter by date, area or event type. Free shows the last 7 days; Premium gives full history forever.</p>
+                    </div>
+                    <div class="feat-phone-wrap reveal">
+                        <div class="phone"><img class="screen" data-screen="history" src="assets/screenshots/en/history.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Konum Verileri</h2>
-            <p>Konum izniniz yalnızca alan takibi (geofencing) için kullanılır. Konum verileriniz:</p>
-            <ul>
-                <li>Yalnızca cihazınızda işlenir</li>
-                <li>Hiçbir üçüncü tarafla paylaşılmaz</li>
-                <li>Hiçbir sunucuya gönderilmez</li>
-                <li>Reklam veya analitik amaçlı kullanılmaz</li>
-            </ul>
+            <section class="feature">
+                <div class="container feat-grid">
+                    <div class="feat-text reveal">
+                        <span class="eyebrow" data-i18n="f_add_eyebrow">Add a place</span>
+                        <h2 class="feat-title" data-i18n="f_add_title">Drop a pin in seconds.</h2>
+                        <p class="feat-desc" data-i18n="f_add_desc">Search for an address or tap on the map. Pick from Home / Work / Other presets and set a radius from 50 to 500 metres.</p>
+                    </div>
+                    <div class="feat-phone-wrap reveal">
+                        <div class="phone"><img class="screen" data-screen="add" src="assets/screenshots/en/add.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Reklamlar ve Üçüncü Taraf Paylaşımı</h2>
-            <p>Uygulama, Google AdMob aracılığıyla reklam göstermektedir. Bu kapsamda anonim reklam verileri Google ile paylaşılabilir. Konum verileriniz hiçbir üçüncü tarafla paylaşılmaz.</p>
-            <p>Reklam takibi için Uygulama Takip Şeffaflığı (ATT) izni istenir. Bu izni dilediğiniz zaman cihaz ayarlarından değiştirebilirsiniz.</p>
+            <section class="feature">
+                <div class="container feat-grid reverse">
+                    <div class="feat-text reveal">
+                        <span class="eyebrow" data-i18n="f_settings_eyebrow">Designed for you</span>
+                        <h2 class="feat-title" data-i18n="f_settings_title">5 languages. Light & dark. Truly private.</h2>
+                        <p class="feat-desc" data-i18n="f_settings_desc">Switch language without restarting the app. System theme support. Your data never leaves the device.</p>
+                    </div>
+                    <div class="feat-phone-wrap reveal">
+                        <div class="phone"><img class="screen" data-screen="settings" src="assets/screenshots/en/settings.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Kullanıcı Hakları</h2>
-            <p>İstediğiniz zaman:</p>
-            <ul>
-                <li>Konum izninizi cihaz ayarlarından iptal edebilirsiniz</li>
-                <li>Uygulama içinden tüm kayıtlı konumları ve geçmiş verilerini silebilirsiniz</li>
-                <li>Uygulamayı silerek tüm verilerinizi kalıcı olarak kaldırabilirsiniz</li>
-            </ul>
+            <a id="pricing"></a>
+            <section class="pricing">
+                <div class="container">
+                    <div class="pricing-head reveal">
+                        <span class="eyebrow" data-i18n="pricing_eyebrow">Pricing</span>
+                        <h2 data-i18n="pricing_title">Start free. Upgrade when you need more.</h2>
+                        <p data-i18n="pricing_sub">No accounts, no cloud. Subscriptions are managed entirely through the App Store and you can cancel anytime.</p>
+                    </div>
+                    <div class="plans">
+                        <div class="plan reveal">
+                            <h3 class="plan-name" data-i18n="pricing_free_name">Free</h3>
+                            <div class="plan-price">
+                                <strong data-i18n="pricing_free_price">$0</strong>
+                                <span data-i18n="pricing_free_period">forever</span>
+                            </div>
+                            <ul>
+                                <li data-i18n="pricing_free_1">3 active locations</li>
+                                <li data-i18n="pricing_free_2">Last 7 days of history</li>
+                                <li data-i18n="pricing_free_3">Battery-friendly geofencing</li>
+                                <li data-i18n="pricing_free_4">Includes ads</li>
+                            </ul>
+                        </div>
+                        <div class="plan featured reveal">
+                            <h3 class="plan-name" data-i18n="pricing_premium_name">Premium</h3>
+                            <div class="plan-price">
+                                <strong data-i18n="pricing_premium_price">3-day free trial</strong>
+                                <span data-i18n="pricing_premium_period">monthly or yearly</span>
+                            </div>
+                            <ul>
+                                <li data-i18n="pricing_premium_1">Up to 20 active locations</li>
+                                <li data-i18n="pricing_premium_2">Full history, unlimited</li>
+                                <li data-i18n="pricing_premium_3">Ad-free experience</li>
+                                <li data-i18n="pricing_premium_4">Cancel anytime in App Store</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>İletişim</h2>
-            <p>Sorularınız için: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+            <section class="cta-band reveal">
+                <div class="container">
+                    <h2 data-i18n="cta_title">Ready to never forget a place again?</h2>
+                    <p data-i18n="cta_sub">PlaceRemind is available on iPhone running iOS 17 or later.</p>
+                    <a class="btn-primary" href="https://apps.apple.com/us/app/placeremind/id6762631106" target="_blank" rel="noopener">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                        <span data-i18n="cta_button">Download on the App Store</span>
+                    </a>
+                </div>
+            </section>
+        </section>
 
-            <h2>Değişiklikler</h2>
-            <p>Bu gizlilik politikası zaman zaman güncellenebilir. Güncel sürüm her zaman uygulama içinden ve bu sayfadan erişilebilir.</p>
+        <!-- SUPPORT VIEW -->
+        <section class="view view-support" id="view-support">
+            <div class="doc">
+                <!-- Turkish -->
+                <div class="lang-block" data-lang="tr">
+                    <span class="doc-pill">Destek</span>
+                    <h1>PlaceRemind — Destek</h1>
+                    <h2>Hakkında</h2>
+                    <p>PlaceRemind, belirlediğiniz konumlara giriş ve çıkışlarınızı otomatik olarak takip eden bir konum hatırlatma uygulamasıdır. Eve, işe veya başka bir alana vardığınızda ya da oradan ayrıldığınızda bildirim alır, tüm geçmişinizi tek bir yerden görebilirsiniz.</p>
+                    <h2>Nasıl Kullanılır?</h2>
+                    <ul>
+                        <li><strong>Konum Ekleme:</strong> "Konumlar" sekmesinden + tuşuna dokunarak haritada bir nokta seçin, isim ve yarıçap belirleyin.</li>
+                        <li><strong>Bildirimler:</strong> Belirlediğiniz alana girdiğinizde veya çıktığınızda otomatik bildirim alırsınız.</li>
+                        <li><strong>Geçmiş:</strong> "Geçmiş" sekmesinden tüm giriş/çıkış kayıtlarınızı görüntüleyebilirsiniz.</li>
+                        <li><strong>Ayarlar:</strong> Tema, dil ve diğer tercihlerinizi "Ayarlar" sekmesinden değiştirebilirsiniz.</li>
+                    </ul>
+                    <h2>Sıkça Sorulan Sorular</h2>
+                    <h3>Bildirimler gelmiyor, ne yapabilirim?</h3>
+                    <p>PlaceRemind'in arka planda çalışabilmesi için aşağıdakileri kontrol edin:</p>
+                    <ul>
+                        <li>Cihaz Ayarları → PlaceRemind → Konum: <strong>"Her Zaman"</strong> seçili olmalı</li>
+                        <li>Cihaz Ayarları → PlaceRemind → Bildirimler izinli olmalı</li>
+                        <li>Cihaz Ayarları → Genel → Arka Planda Yenile açık olmalı</li>
+                    </ul>
+                    <h3>Pil tüketimi yüksek mi?</h3>
+                    <p>Hayır. PlaceRemind, iOS'un sistem geofencing API'lerini kullanır. Bu yöntem GPS'i sürekli açık tutmadan, çok düşük pil tüketimiyle çalışır.</p>
+                    <h3>Ücretsiz sürümün sınırları nelerdir?</h3>
+                    <p>Ücretsiz sürümde en fazla 3 aktif konum tanımlayabilir ve yalnızca son 7 günlük geçmişi görüntüleyebilirsiniz. Ücretsiz sürümde reklamlar gösterilir.</p>
+                    <h3>Premium ne sunar?</h3>
+                    <ul>
+                        <li>Sınırsız konum (20'ye kadar)</li>
+                        <li>Tüm geçmişe erişim</li>
+                        <li>Reklamsız kullanım</li>
+                    </ul>
+                    <p>3 günlük ücretsiz deneme süresi mevcuttur. Aylık veya yıllık abonelik seçenekleri vardır.</p>
+                    <h3>Premium aboneliğimi nasıl iptal ederim?</h3>
+                    <p>iPhone Ayarları → [Adınız] → Abonelikler → PlaceRemind → "Aboneliği İptal Et". Abonelik yönetimi tamamen App Store üzerinden yapılır; uygulama içinden iptal işlemi yapılmaz.</p>
+                    <h3>Verilerimi nasıl silerim?</h3>
+                    <p>Tüm veriler yalnızca cihazınızda saklanır. Uygulama içinden konumlarınızı ve geçmiş kayıtlarınızı silebilir ya da uygulamayı kaldırarak tüm verileri kalıcı olarak yok edebilirsiniz.</p>
+                    <h3>Konum verilerim paylaşılıyor mu?</h3>
+                    <p>Hayır. Konum verileriniz hiçbir sunucuya gönderilmez ve hiçbir üçüncü tarafla paylaşılmaz.</p>
+                    <h2>İletişim</h2>
+                    <p>Soru, geri bildirim veya sorun bildirimi için: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <p>E-postanıza cihaz modelinizi ve iOS sürümünüzü eklerseniz size daha hızlı yardımcı olabiliriz.</p>
+                </div>
+
+                <!-- English -->
+                <div class="lang-block" data-lang="en">
+                    <span class="doc-pill">Support</span>
+                    <h1>PlaceRemind — Support</h1>
+                    <h2>About</h2>
+                    <p>PlaceRemind is a location reminder app that automatically tracks your entries and exits from places you define. Get a notification when you arrive at or leave home, work, or any other area, and review your full history in one place.</p>
+                    <h2>How to Use</h2>
+                    <ul>
+                        <li><strong>Add a location:</strong> In the "Locations" tab, tap + to drop a pin on the map and set a name and radius.</li>
+                        <li><strong>Notifications:</strong> You'll automatically receive a notification when you enter or leave one of your areas.</li>
+                        <li><strong>History:</strong> View all your entry/exit records in the "History" tab.</li>
+                        <li><strong>Settings:</strong> Change theme, language, and other preferences in the "Settings" tab.</li>
+                    </ul>
+                    <h2>Frequently Asked Questions</h2>
+                    <h3>I'm not getting notifications. What can I do?</h3>
+                    <p>For PlaceRemind to work in the background, please check the following:</p>
+                    <ul>
+                        <li>Device Settings → PlaceRemind → Location: must be set to <strong>"Always"</strong></li>
+                        <li>Device Settings → PlaceRemind → Notifications: must be allowed</li>
+                        <li>Device Settings → General → Background App Refresh: must be on</li>
+                    </ul>
+                    <h3>Does it drain my battery?</h3>
+                    <p>No. PlaceRemind uses iOS system geofencing APIs, which work without keeping GPS continuously active and consume very little battery.</p>
+                    <h3>What are the limits of the free version?</h3>
+                    <p>The free version supports up to 3 active locations and shows only the last 7 days of history. Ads are displayed in the free version.</p>
+                    <h3>What does Premium offer?</h3>
+                    <ul>
+                        <li>Unlimited locations (up to 20)</li>
+                        <li>Full history access</li>
+                        <li>Ad-free experience</li>
+                    </ul>
+                    <p>A 3-day free trial is available. Monthly or yearly subscription options are offered.</p>
+                    <h3>How do I cancel my Premium subscription?</h3>
+                    <p>iPhone Settings → [Your Name] → Subscriptions → PlaceRemind → "Cancel Subscription". Subscription management is handled entirely through the App Store; cancellation is not done from inside the app.</p>
+                    <h3>How do I delete my data?</h3>
+                    <p>All data is stored only on your device. You can delete your locations and history records from within the app, or uninstall the app to remove all data permanently.</p>
+                    <h3>Is my location data shared?</h3>
+                    <p>No. Your location data is never sent to any server or shared with any third party.</p>
+                    <h2>Contact</h2>
+                    <p>For questions, feedback, or to report an issue: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <p>Including your device model and iOS version helps us help you faster.</p>
+                </div>
+
+                <!-- German -->
+                <div class="lang-block" data-lang="de">
+                    <span class="doc-pill">Hilfe</span>
+                    <h1>PlaceRemind — Hilfe</h1>
+                    <h2>Über die App</h2>
+                    <p>PlaceRemind ist eine Standort-Erinnerungs-App, die Ihre Ein- und Austritte an festgelegten Orten automatisch verfolgt. Erhalten Sie eine Benachrichtigung, wenn Sie zu Hause, am Arbeitsplatz oder an einem anderen Ort ankommen oder ihn verlassen, und sehen Sie sich Ihre gesamte Historie an einem Ort an.</p>
+                    <h2>So verwenden Sie die App</h2>
+                    <ul>
+                        <li><strong>Standort hinzufügen:</strong> Tippen Sie im Tab "Standorte" auf +, setzen Sie eine Markierung auf der Karte und legen Sie Name und Radius fest.</li>
+                        <li><strong>Benachrichtigungen:</strong> Sie erhalten automatisch eine Benachrichtigung, wenn Sie einen Ihrer Bereiche betreten oder verlassen.</li>
+                        <li><strong>Verlauf:</strong> Sehen Sie alle Ein-/Austrittsaufzeichnungen im Tab "Verlauf".</li>
+                        <li><strong>Einstellungen:</strong> Ändern Sie Design, Sprache und andere Einstellungen im Tab "Einstellungen".</li>
+                    </ul>
+                    <h2>Häufig gestellte Fragen</h2>
+                    <h3>Ich erhalte keine Benachrichtigungen. Was kann ich tun?</h3>
+                    <p>Damit PlaceRemind im Hintergrund funktioniert, prüfen Sie bitte Folgendes:</p>
+                    <ul>
+                        <li>Geräteeinstellungen → PlaceRemind → Standort: muss auf <strong>"Immer"</strong> gesetzt sein</li>
+                        <li>Geräteeinstellungen → PlaceRemind → Mitteilungen: müssen erlaubt sein</li>
+                        <li>Geräteeinstellungen → Allgemein → Hintergrundaktualisierung: muss aktiviert sein</li>
+                    </ul>
+                    <h3>Verbraucht die App viel Akku?</h3>
+                    <p>Nein. PlaceRemind nutzt die System-Geofencing-APIs von iOS, die ohne ständig aktives GPS arbeiten und sehr wenig Akku verbrauchen.</p>
+                    <h3>Welche Einschränkungen hat die kostenlose Version?</h3>
+                    <p>Die kostenlose Version unterstützt bis zu 3 aktive Standorte und zeigt nur die letzten 7 Tage des Verlaufs. In der kostenlosen Version werden Werbeanzeigen angezeigt.</p>
+                    <h3>Was bietet Premium?</h3>
+                    <ul>
+                        <li>Unbegrenzte Standorte (bis zu 20)</li>
+                        <li>Vollständiger Verlauf</li>
+                        <li>Werbefreie Nutzung</li>
+                    </ul>
+                    <p>Eine 3-tägige kostenlose Testphase ist verfügbar. Monatliche und jährliche Abonnements werden angeboten.</p>
+                    <h3>Wie kündige ich mein Premium-Abonnement?</h3>
+                    <p>iPhone-Einstellungen → [Ihr Name] → Abonnements → PlaceRemind → "Abonnement kündigen". Die Abonnementverwaltung erfolgt vollständig über den App Store; eine Kündigung ist nicht in der App selbst möglich.</p>
+                    <h3>Wie lösche ich meine Daten?</h3>
+                    <p>Alle Daten werden nur auf Ihrem Gerät gespeichert. Sie können Ihre Standorte und Verlaufseinträge in der App löschen oder die App deinstallieren, um alle Daten dauerhaft zu entfernen.</p>
+                    <h3>Werden meine Standortdaten geteilt?</h3>
+                    <p>Nein. Ihre Standortdaten werden nie an einen Server gesendet oder mit Dritten geteilt.</p>
+                    <h2>Kontakt</h2>
+                    <p>Bei Fragen, Feedback oder Problemen: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <p>Wenn Sie Ihr Gerätemodell und die iOS-Version angeben, können wir Ihnen schneller helfen.</p>
+                </div>
+
+                <!-- French -->
+                <div class="lang-block" data-lang="fr">
+                    <span class="doc-pill">Assistance</span>
+                    <h1>PlaceRemind — Assistance</h1>
+                    <h2>À propos</h2>
+                    <p>PlaceRemind est une application de rappel basée sur la localisation qui suit automatiquement vos entrées et sorties dans les lieux que vous définissez. Recevez une notification lorsque vous arrivez ou quittez votre domicile, votre travail ou tout autre lieu, et consultez tout votre historique au même endroit.</p>
+                    <h2>Comment l'utiliser</h2>
+                    <ul>
+                        <li><strong>Ajouter un lieu :</strong> Dans l'onglet "Lieux", appuyez sur + pour placer une épingle sur la carte et définissez un nom et un rayon.</li>
+                        <li><strong>Notifications :</strong> Vous recevez automatiquement une notification lorsque vous entrez dans une zone ou la quittez.</li>
+                        <li><strong>Historique :</strong> Consultez tous vos enregistrements d'entrée/sortie dans l'onglet "Historique".</li>
+                        <li><strong>Réglages :</strong> Modifiez le thème, la langue et les autres préférences dans l'onglet "Réglages".</li>
+                    </ul>
+                    <h2>Questions fréquentes</h2>
+                    <h3>Je ne reçois pas de notifications. Que faire ?</h3>
+                    <p>Pour que PlaceRemind fonctionne en arrière-plan, vérifiez ce qui suit :</p>
+                    <ul>
+                        <li>Réglages de l'appareil → PlaceRemind → Localisation : doit être réglé sur <strong>"Toujours"</strong></li>
+                        <li>Réglages de l'appareil → PlaceRemind → Notifications : doivent être autorisées</li>
+                        <li>Réglages de l'appareil → Général → Actualisation en arrière-plan : doit être activée</li>
+                    </ul>
+                    <h3>L'application consomme-t-elle beaucoup de batterie ?</h3>
+                    <p>Non. PlaceRemind utilise les API de geofencing du système iOS, qui fonctionnent sans maintenir le GPS actif en permanence et consomment très peu de batterie.</p>
+                    <h3>Quelles sont les limites de la version gratuite ?</h3>
+                    <p>La version gratuite prend en charge jusqu'à 3 lieux actifs et n'affiche que les 7 derniers jours d'historique. Des publicités sont affichées dans la version gratuite.</p>
+                    <h3>Que propose Premium ?</h3>
+                    <ul>
+                        <li>Lieux illimités (jusqu'à 20)</li>
+                        <li>Accès à tout l'historique</li>
+                        <li>Sans publicité</li>
+                    </ul>
+                    <p>Une période d'essai gratuite de 3 jours est disponible. Des abonnements mensuels ou annuels sont proposés.</p>
+                    <h3>Comment annuler mon abonnement Premium ?</h3>
+                    <p>Réglages iPhone → [Votre nom] → Abonnements → PlaceRemind → "Annuler l'abonnement". La gestion des abonnements se fait entièrement via l'App Store ; l'annulation ne peut pas être effectuée depuis l'application.</p>
+                    <h3>Comment supprimer mes données ?</h3>
+                    <p>Toutes les données sont stockées uniquement sur votre appareil. Vous pouvez supprimer vos lieux et l'historique depuis l'application, ou désinstaller l'application pour supprimer définitivement toutes les données.</p>
+                    <h3>Mes données de localisation sont-elles partagées ?</h3>
+                    <p>Non. Vos données de localisation ne sont jamais envoyées à un serveur ni partagées avec un tiers.</p>
+                    <h2>Contact</h2>
+                    <p>Pour toute question, retour ou signalement de problème : <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <p>Indiquer votre modèle d'appareil et votre version d'iOS nous aide à vous répondre plus rapidement.</p>
+                </div>
+
+                <!-- Spanish -->
+                <div class="lang-block" data-lang="es">
+                    <span class="doc-pill">Soporte</span>
+                    <h1>PlaceRemind — Soporte</h1>
+                    <h2>Acerca de</h2>
+                    <p>PlaceRemind es una aplicación de recordatorios basada en la ubicación que rastrea automáticamente tus entradas y salidas de los lugares que defines. Recibe una notificación al llegar o salir de casa, el trabajo o cualquier otro lugar, y consulta todo tu historial en un solo sitio.</p>
+                    <h2>Cómo usarla</h2>
+                    <ul>
+                        <li><strong>Añadir una ubicación:</strong> En la pestaña "Ubicaciones", toca + para colocar un pin en el mapa y definir un nombre y un radio.</li>
+                        <li><strong>Notificaciones:</strong> Recibirás una notificación automáticamente al entrar o salir de una zona.</li>
+                        <li><strong>Historial:</strong> Consulta todos los registros de entrada/salida en la pestaña "Historial".</li>
+                        <li><strong>Ajustes:</strong> Cambia el tema, idioma y otras preferencias en la pestaña "Ajustes".</li>
+                    </ul>
+                    <h2>Preguntas frecuentes</h2>
+                    <h3>No recibo notificaciones. ¿Qué puedo hacer?</h3>
+                    <p>Para que PlaceRemind funcione en segundo plano, comprueba lo siguiente:</p>
+                    <ul>
+                        <li>Ajustes del dispositivo → PlaceRemind → Ubicación: debe estar en <strong>"Siempre"</strong></li>
+                        <li>Ajustes del dispositivo → PlaceRemind → Notificaciones: deben estar permitidas</li>
+                        <li>Ajustes del dispositivo → General → Actualización en segundo plano: debe estar activada</li>
+                    </ul>
+                    <h3>¿Consume mucha batería?</h3>
+                    <p>No. PlaceRemind utiliza las API de geofencing del sistema iOS, que funcionan sin mantener el GPS activo de forma continua y consumen muy poca batería.</p>
+                    <h3>¿Cuáles son los límites de la versión gratuita?</h3>
+                    <p>La versión gratuita admite hasta 3 ubicaciones activas y solo muestra los últimos 7 días de historial. En la versión gratuita se muestran anuncios.</p>
+                    <h3>¿Qué ofrece Premium?</h3>
+                    <ul>
+                        <li>Ubicaciones ilimitadas (hasta 20)</li>
+                        <li>Acceso al historial completo</li>
+                        <li>Sin anuncios</li>
+                    </ul>
+                    <p>Hay disponible una prueba gratuita de 3 días. Se ofrecen suscripciones mensuales o anuales.</p>
+                    <h3>¿Cómo cancelo mi suscripción Premium?</h3>
+                    <p>Ajustes del iPhone → [Tu nombre] → Suscripciones → PlaceRemind → "Cancelar suscripción". La gestión de suscripciones se realiza completamente a través del App Store; la cancelación no se hace desde la app.</p>
+                    <h3>¿Cómo elimino mis datos?</h3>
+                    <p>Todos los datos se almacenan solo en tu dispositivo. Puedes eliminar tus ubicaciones e historial desde la app, o desinstalar la app para eliminar todos los datos de forma permanente.</p>
+                    <h3>¿Se comparten mis datos de ubicación?</h3>
+                    <p>No. Tus datos de ubicación nunca se envían a ningún servidor ni se comparten con terceros.</p>
+                    <h2>Contacto</h2>
+                    <p>Para preguntas, comentarios o reportar un problema: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <p>Incluir el modelo de tu dispositivo y la versión de iOS nos ayuda a responderte más rápido.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT VIEW -->
+        <section class="view view-contact" id="view-contact">
+            <div class="contact-card">
+                <span class="doc-pill" data-i18n="contact_pill">Contact</span>
+                <h1 data-i18n="contact_title">Get in touch</h1>
+                <p data-i18n="contact_sub">Requests, suggestions and complaints all go to the same place. Tap the button below to start an email.</p>
+                <a class="btn-primary" href="mailto:placeremind@stopcu.com.tr?subject=PlaceRemind%20%E2%80%94%20Request%2FSuggestion%2FComplaint">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>placeremind@stopcu.com.tr</span>
+                </a>
+                <p class="contact-tip" data-i18n="contact_tip">Including your device model and iOS version helps us help you faster.</p>
+            </div>
+        </section>
+
+        <!-- PRIVACY VIEW -->
+        <section class="view view-privacy" id="view-privacy">
+            <div class="doc">
+                <!-- Turkish -->
+                <div class="lang-block" data-lang="tr">
+                    <span class="doc-pill">Gizlilik</span>
+                    <h1>PlaceRemind — Gizlilik Politikası</h1>
+                    <p class="date">Son güncelleme: 5 Nisan 2026</p>
+                    <h2>Genel Bakış</h2>
+                    <p>PlaceRemind, belirlediğiniz konumlara giriş ve çıkışlarınızı takip eden bir uygulamadır. Gizliliğinize önem veriyoruz.</p>
+                    <h2>Toplanan Veriler</h2>
+                    <p>Uygulama aşağıdaki verileri toplar:</p>
+                    <ul>
+                        <li><strong>Konum verileri:</strong> Belirlediğiniz alanlar için giriş/çıkış kayıtları (yalnızca cihazınızda saklanır)</li>
+                        <li><strong>Kullanıcı tercihleri:</strong> Tema ve uygulama ayarları (yalnızca cihazınızda saklanır)</li>
+                        <li><strong>Reklam verileri:</strong> Uygulama içi reklamlar için anonim kullanım verileri (reklam sağlayıcısıyla paylaşılabilir)</li>
+                    </ul>
+                    <h2>Veri Saklama</h2>
+                    <p>Tüm verileriniz yalnızca cihazınızda saklanır. Hiçbir veri harici bir sunucuya gönderilmez veya bulutta depolanmaz. Uygulamayı sildiğinizde tüm verileriniz kalıcı olarak silinir.</p>
+                    <h2>Konum Verileri</h2>
+                    <p>Konum izniniz yalnızca alan takibi (geofencing) için kullanılır. Konum verileriniz:</p>
+                    <ul>
+                        <li>Yalnızca cihazınızda işlenir</li>
+                        <li>Hiçbir üçüncü tarafla paylaşılmaz</li>
+                        <li>Hiçbir sunucuya gönderilmez</li>
+                        <li>Reklam veya analitik amaçlı kullanılmaz</li>
+                    </ul>
+                    <h2>Reklamlar ve Üçüncü Taraf Paylaşımı</h2>
+                    <p>Uygulama, Google AdMob aracılığıyla reklam göstermektedir. Bu kapsamda anonim reklam verileri Google ile paylaşılabilir. Konum verileriniz hiçbir üçüncü tarafla paylaşılmaz.</p>
+                    <p>Reklam takibi için Uygulama Takip Şeffaflığı (ATT) izni istenir. Bu izni dilediğiniz zaman cihaz ayarlarından değiştirebilirsiniz.</p>
+                    <h2>Kullanıcı Hakları</h2>
+                    <p>İstediğiniz zaman:</p>
+                    <ul>
+                        <li>Konum izninizi cihaz ayarlarından iptal edebilirsiniz</li>
+                        <li>Uygulama içinden tüm kayıtlı konumları ve geçmiş verilerini silebilirsiniz</li>
+                        <li>Uygulamayı silerek tüm verilerinizi kalıcı olarak kaldırabilirsiniz</li>
+                    </ul>
+                    <h2>İletişim</h2>
+                    <p>Sorularınız için: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <h2>Değişiklikler</h2>
+                    <p>Bu gizlilik politikası zaman zaman güncellenebilir. Güncel sürüm her zaman uygulama içinden ve bu sayfadan erişilebilir.</p>
+                </div>
+
+                <!-- English -->
+                <div class="lang-block" data-lang="en">
+                    <span class="doc-pill">Privacy</span>
+                    <h1>PlaceRemind — Privacy Policy</h1>
+                    <p class="date">Last updated: April 5, 2026</p>
+                    <h2>Overview</h2>
+                    <p>PlaceRemind is an app that tracks your entries and exits from defined locations. We value your privacy.</p>
+                    <h2>Collected Data</h2>
+                    <p>The app collects the following data:</p>
+                    <ul>
+                        <li><strong>Location data:</strong> Entry/exit records for your defined areas (stored only on your device)</li>
+                        <li><strong>User preferences:</strong> Theme and app settings (stored only on your device)</li>
+                        <li><strong>Ad data:</strong> Anonymous usage data for in-app ads (may be shared with the ad provider)</li>
+                    </ul>
+                    <h2>Data Storage</h2>
+                    <p>All your data is stored only on your device. No data is sent to any external server or stored in the cloud. When you delete the app, all your data is permanently deleted.</p>
+                    <h2>Location Data</h2>
+                    <p>Your location permission is used solely for area tracking (geofencing). Your location data:</p>
+                    <ul>
+                        <li>Is processed only on your device</li>
+                        <li>Is not shared with any third party</li>
+                        <li>Is not sent to any server</li>
+                        <li>Is not used for advertising or analytics</li>
+                    </ul>
+                    <h2>Ads and Third-Party Sharing</h2>
+                    <p>The app displays ads through Google AdMob. Anonymous ad data may be shared with Google. Your location data is not shared with any third party.</p>
+                    <p>App Tracking Transparency (ATT) permission is requested for ad tracking. You can change this permission at any time in your device settings.</p>
+                    <h2>User Rights</h2>
+                    <p>At any time you can:</p>
+                    <ul>
+                        <li>Revoke location permission from your device settings</li>
+                        <li>Delete all saved locations and history data from within the app</li>
+                        <li>Permanently remove all your data by deleting the app</li>
+                    </ul>
+                    <h2>Contact</h2>
+                    <p>For questions: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <h2>Changes</h2>
+                    <p>This privacy policy may be updated from time to time. The current version is always accessible from within the app and on this page.</p>
+                </div>
+
+                <!-- German -->
+                <div class="lang-block" data-lang="de">
+                    <span class="doc-pill">Datenschutz</span>
+                    <h1>PlaceRemind — Datenschutzrichtlinie</h1>
+                    <p class="date">Letzte Aktualisierung: 5. April 2026</p>
+                    <h2>Übersicht</h2>
+                    <p>PlaceRemind ist eine App, die Ihre Ein- und Austritte an festgelegten Standorten verfolgt. Wir schätzen Ihre Privatsphäre.</p>
+                    <h2>Erfasste Daten</h2>
+                    <p>Die App erfasst folgende Daten:</p>
+                    <ul>
+                        <li><strong>Standortdaten:</strong> Ein-/Austrittsaufzeichnungen für Ihre festgelegten Bereiche (nur auf Ihrem Gerät gespeichert)</li>
+                        <li><strong>Benutzereinstellungen:</strong> Design- und App-Einstellungen (nur auf Ihrem Gerät gespeichert)</li>
+                        <li><strong>Werbedaten:</strong> Anonyme Nutzungsdaten für In-App-Werbung (können mit dem Werbeanbieter geteilt werden)</li>
+                    </ul>
+                    <h2>Datenspeicherung</h2>
+                    <p>Alle Ihre Daten werden nur auf Ihrem Gerät gespeichert. Keine Daten werden an externe Server gesendet oder in der Cloud gespeichert. Beim Löschen der App werden alle Ihre Daten dauerhaft gelöscht.</p>
+                    <h2>Standortdaten</h2>
+                    <p>Ihre Standortberechtigung wird ausschließlich für die Bereichsüberwachung (Geofencing) verwendet. Ihre Standortdaten:</p>
+                    <ul>
+                        <li>Werden nur auf Ihrem Gerät verarbeitet</li>
+                        <li>Werden mit keinem Dritten geteilt</li>
+                        <li>Werden an keinen Server gesendet</li>
+                        <li>Werden nicht für Werbung oder Analysen verwendet</li>
+                    </ul>
+                    <h2>Werbung und Weitergabe an Dritte</h2>
+                    <p>Die App zeigt Werbung über Google AdMob an. Anonyme Werbedaten können mit Google geteilt werden. Ihre Standortdaten werden mit keinem Dritten geteilt.</p>
+                    <p>Für die Werbenachverfolgung wird die App-Tracking-Transparenz (ATT) Berechtigung angefordert. Sie können diese Berechtigung jederzeit in Ihren Geräteeinstellungen ändern.</p>
+                    <h2>Benutzerrechte</h2>
+                    <p>Sie können jederzeit:</p>
+                    <ul>
+                        <li>Die Standortberechtigung in Ihren Geräteeinstellungen widerrufen</li>
+                        <li>Alle gespeicherten Standorte und Verlaufsdaten in der App löschen</li>
+                        <li>Alle Ihre Daten dauerhaft entfernen, indem Sie die App löschen</li>
+                    </ul>
+                    <h2>Kontakt</h2>
+                    <p>Bei Fragen: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <h2>Änderungen</h2>
+                    <p>Diese Datenschutzrichtlinie kann von Zeit zu Zeit aktualisiert werden. Die aktuelle Version ist immer in der App und auf dieser Seite zugänglich.</p>
+                </div>
+
+                <!-- French -->
+                <div class="lang-block" data-lang="fr">
+                    <span class="doc-pill">Confidentialité</span>
+                    <h1>PlaceRemind — Politique de confidentialité</h1>
+                    <p class="date">Dernière mise à jour : 5 avril 2026</p>
+                    <h2>Aperçu</h2>
+                    <p>PlaceRemind est une application qui suit vos entrées et sorties des emplacements définis. Nous attachons de l'importance à votre vie privée.</p>
+                    <h2>Données collectées</h2>
+                    <p>L'application collecte les données suivantes :</p>
+                    <ul>
+                        <li><strong>Données de localisation :</strong> Enregistrements d'entrée/sortie pour vos zones définies (stockées uniquement sur votre appareil)</li>
+                        <li><strong>Préférences utilisateur :</strong> Thème et paramètres de l'application (stockés uniquement sur votre appareil)</li>
+                        <li><strong>Données publicitaires :</strong> Données d'utilisation anonymes pour les publicités intégrées (peuvent être partagées avec le fournisseur de publicité)</li>
+                    </ul>
+                    <h2>Stockage des données</h2>
+                    <p>Toutes vos données sont stockées uniquement sur votre appareil. Aucune donnée n'est envoyée à un serveur externe ni stockée dans le cloud. Lorsque vous supprimez l'application, toutes vos données sont définitivement supprimées.</p>
+                    <h2>Données de localisation</h2>
+                    <p>Votre autorisation de localisation est utilisée uniquement pour le suivi de zone (geofencing). Vos données de localisation :</p>
+                    <ul>
+                        <li>Sont traitées uniquement sur votre appareil</li>
+                        <li>Ne sont partagées avec aucun tiers</li>
+                        <li>Ne sont envoyées à aucun serveur</li>
+                        <li>Ne sont pas utilisées à des fins publicitaires ou analytiques</li>
+                    </ul>
+                    <h2>Publicités et partage avec des tiers</h2>
+                    <p>L'application affiche des publicités via Google AdMob. Des données publicitaires anonymes peuvent être partagées avec Google. Vos données de localisation ne sont partagées avec aucun tiers.</p>
+                    <p>L'autorisation de transparence du suivi des applications (ATT) est demandée pour le suivi publicitaire. Vous pouvez modifier cette autorisation à tout moment dans les paramètres de votre appareil.</p>
+                    <h2>Droits des utilisateurs</h2>
+                    <p>À tout moment, vous pouvez :</p>
+                    <ul>
+                        <li>Révoquer l'autorisation de localisation dans les paramètres de votre appareil</li>
+                        <li>Supprimer tous les emplacements enregistrés et les données d'historique depuis l'application</li>
+                        <li>Supprimer définitivement toutes vos données en supprimant l'application</li>
+                    </ul>
+                    <h2>Contact</h2>
+                    <p>Pour toute question : <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <h2>Modifications</h2>
+                    <p>Cette politique de confidentialité peut être mise à jour de temps en temps. La version actuelle est toujours accessible depuis l'application et sur cette page.</p>
+                </div>
+
+                <!-- Spanish -->
+                <div class="lang-block" data-lang="es">
+                    <span class="doc-pill">Privacidad</span>
+                    <h1>PlaceRemind — Política de privacidad</h1>
+                    <p class="date">Última actualización: 5 de abril de 2026</p>
+                    <h2>Descripción general</h2>
+                    <p>PlaceRemind es una aplicación que rastrea tus entradas y salidas de ubicaciones definidas. Valoramos tu privacidad.</p>
+                    <h2>Datos recopilados</h2>
+                    <p>La aplicación recopila los siguientes datos:</p>
+                    <ul>
+                        <li><strong>Datos de ubicación:</strong> Registros de entrada/salida de tus áreas definidas (almacenados solo en tu dispositivo)</li>
+                        <li><strong>Preferencias del usuario:</strong> Tema y ajustes de la aplicación (almacenados solo en tu dispositivo)</li>
+                        <li><strong>Datos de anuncios:</strong> Datos de uso anónimos para anuncios en la aplicación (pueden compartirse con el proveedor de anuncios)</li>
+                    </ul>
+                    <h2>Almacenamiento de datos</h2>
+                    <p>Todos tus datos se almacenan solo en tu dispositivo. Ningún dato se envía a servidores externos ni se almacena en la nube. Al eliminar la aplicación, todos tus datos se eliminan permanentemente.</p>
+                    <h2>Datos de ubicación</h2>
+                    <p>Tu permiso de ubicación se usa únicamente para el seguimiento de áreas (geofencing). Tus datos de ubicación:</p>
+                    <ul>
+                        <li>Se procesan solo en tu dispositivo</li>
+                        <li>No se comparten con terceros</li>
+                        <li>No se envían a ningún servidor</li>
+                        <li>No se usan con fines publicitarios o analíticos</li>
+                    </ul>
+                    <h2>Anuncios y uso compartido con terceros</h2>
+                    <p>La aplicación muestra anuncios a través de Google AdMob. Los datos publicitarios anónimos pueden compartirse con Google. Tus datos de ubicación no se comparten con terceros.</p>
+                    <p>Se solicita el permiso de Transparencia de Seguimiento de Apps (ATT) para el seguimiento publicitario. Puedes cambiar este permiso en cualquier momento en la configuración de tu dispositivo.</p>
+                    <h2>Derechos del usuario</h2>
+                    <p>En cualquier momento puedes:</p>
+                    <ul>
+                        <li>Revocar el permiso de ubicación desde la configuración de tu dispositivo</li>
+                        <li>Eliminar todas las ubicaciones guardadas y los datos del historial desde la aplicación</li>
+                        <li>Eliminar permanentemente todos tus datos eliminando la aplicación</li>
+                    </ul>
+                    <h2>Contacto</h2>
+                    <p>Para consultas: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
+                    <h2>Cambios</h2>
+                    <p>Esta política de privacidad puede actualizarse de vez en cuando. La versión actual siempre está accesible desde la aplicación y en esta página.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                <span data-i18n="footer_contact">Questions?</span>
+                <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a>
+            </p>
+            <p>© <span id="year"></span> PlaceRemind · <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
-    </div>
-
-    <!-- English -->
-    <div id="en" class="lang-section">
-        <div class="support-section">
-            <h1>PlaceRemind - Support</h1>
-
-            <h2>About</h2>
-            <p>PlaceRemind is a location reminder app that automatically tracks your entries and exits from places you define. Get a notification when you arrive at or leave home, work, or any other area, and review your full history in one place.</p>
-
-            <h2>How to Use</h2>
-            <ul>
-                <li><strong>Add a location:</strong> In the "Locations" tab, tap + to drop a pin on the map and set a name and radius.</li>
-                <li><strong>Notifications:</strong> You'll automatically receive a notification when you enter or leave one of your areas.</li>
-                <li><strong>History:</strong> View all your entry/exit records in the "History" tab.</li>
-                <li><strong>Settings:</strong> Change theme, language, and other preferences in the "Settings" tab.</li>
-            </ul>
-
-            <h2>Frequently Asked Questions</h2>
-
-            <h3>I'm not getting notifications. What can I do?</h3>
-            <p>For PlaceRemind to work in the background, please check the following:</p>
-            <ul>
-                <li>Device Settings → PlaceRemind → Location: must be set to <strong>"Always"</strong></li>
-                <li>Device Settings → PlaceRemind → Notifications: must be allowed</li>
-                <li>Device Settings → General → Background App Refresh: must be on</li>
-            </ul>
-
-            <h3>Does it drain my battery?</h3>
-            <p>No. PlaceRemind uses iOS system geofencing APIs, which work without keeping GPS continuously active and consume very little battery.</p>
-
-            <h3>What are the limits of the free version?</h3>
-            <p>The free version supports up to 3 active locations and shows only the last 7 days of history. Ads are displayed in the free version.</p>
-
-            <h3>What does Premium offer?</h3>
-            <ul>
-                <li>Unlimited locations</li>
-                <li>Full history access</li>
-                <li>Ad-free experience</li>
-            </ul>
-            <p>A 3-day free trial is available. Monthly or yearly subscription options are offered.</p>
-
-            <h3>How do I cancel my Premium subscription?</h3>
-            <p>iPhone Settings → [Your Name] → Subscriptions → PlaceRemind → "Cancel Subscription". Subscription management is handled entirely through the App Store; cancellation is not done from inside the app.</p>
-
-            <h3>How do I delete my data?</h3>
-            <p>All data is stored only on your device. You can delete your locations and history records from within the app, or uninstall the app to remove all data permanently.</p>
-
-            <h3>Is my location data shared?</h3>
-            <p>No. Your location data is never sent to any server or shared with any third party. See the "Privacy" tab above for details.</p>
-
-            <h2>Contact</h2>
-            <p>For questions, feedback, or to report an issue: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-            <p>Including your device model and iOS version helps us help you faster.</p>
-        </div>
-
-        <div class="privacy-section">
-            <h1>PlaceRemind - Privacy Policy</h1>
-            <p class="date">Last updated: April 5, 2026</p>
-
-            <h2>Overview</h2>
-            <p>PlaceRemind is an app that tracks your entries and exits from defined locations. We value your privacy.</p>
-
-            <h2>Collected Data</h2>
-            <p>The app collects the following data:</p>
-            <ul>
-                <li><strong>Location data:</strong> Entry/exit records for your defined areas (stored only on your device)</li>
-                <li><strong>User preferences:</strong> Theme and app settings (stored only on your device)</li>
-                <li><strong>Ad data:</strong> Anonymous usage data for in-app ads (may be shared with the ad provider)</li>
-            </ul>
-
-            <h2>Data Storage</h2>
-            <p>All your data is stored only on your device. No data is sent to any external server or stored in the cloud. When you delete the app, all your data is permanently deleted.</p>
-
-            <h2>Location Data</h2>
-            <p>Your location permission is used solely for area tracking (geofencing). Your location data:</p>
-            <ul>
-                <li>Is processed only on your device</li>
-                <li>Is not shared with any third party</li>
-                <li>Is not sent to any server</li>
-                <li>Is not used for advertising or analytics</li>
-            </ul>
-
-            <h2>Ads and Third-Party Sharing</h2>
-            <p>The app displays ads through Google AdMob. Anonymous ad data may be shared with Google. Your location data is not shared with any third party.</p>
-            <p>App Tracking Transparency (ATT) permission is requested for ad tracking. You can change this permission at any time in your device settings.</p>
-
-            <h2>User Rights</h2>
-            <p>At any time you can:</p>
-            <ul>
-                <li>Revoke location permission from your device settings</li>
-                <li>Delete all saved locations and history data from within the app</li>
-                <li>Permanently remove all your data by deleting the app</li>
-            </ul>
-
-            <h2>Contact</h2>
-            <p>For questions: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-
-            <h2>Changes</h2>
-            <p>This privacy policy may be updated from time to time. The current version is always accessible from within the app and on this page.</p>
-        </div>
-    </div>
-
-    <!-- German -->
-    <div id="de" class="lang-section">
-        <div class="support-section">
-            <h1>PlaceRemind - Hilfe</h1>
-
-            <h2>Über die App</h2>
-            <p>PlaceRemind ist eine Standort-Erinnerungs-App, die Ihre Ein- und Austritte an festgelegten Orten automatisch verfolgt. Erhalten Sie eine Benachrichtigung, wenn Sie zu Hause, am Arbeitsplatz oder an einem anderen Ort ankommen oder ihn verlassen, und sehen Sie sich Ihre gesamte Historie an einem Ort an.</p>
-
-            <h2>So verwenden Sie die App</h2>
-            <ul>
-                <li><strong>Standort hinzufügen:</strong> Tippen Sie im Tab "Standorte" auf +, setzen Sie eine Markierung auf der Karte und legen Sie Name und Radius fest.</li>
-                <li><strong>Benachrichtigungen:</strong> Sie erhalten automatisch eine Benachrichtigung, wenn Sie einen Ihrer Bereiche betreten oder verlassen.</li>
-                <li><strong>Verlauf:</strong> Sehen Sie alle Ein-/Austrittsaufzeichnungen im Tab "Verlauf".</li>
-                <li><strong>Einstellungen:</strong> Ändern Sie Design, Sprache und andere Einstellungen im Tab "Einstellungen".</li>
-            </ul>
-
-            <h2>Häufig gestellte Fragen</h2>
-
-            <h3>Ich erhalte keine Benachrichtigungen. Was kann ich tun?</h3>
-            <p>Damit PlaceRemind im Hintergrund funktioniert, prüfen Sie bitte Folgendes:</p>
-            <ul>
-                <li>Geräteeinstellungen → PlaceRemind → Standort: muss auf <strong>"Immer"</strong> gesetzt sein</li>
-                <li>Geräteeinstellungen → PlaceRemind → Mitteilungen: müssen erlaubt sein</li>
-                <li>Geräteeinstellungen → Allgemein → Hintergrundaktualisierung: muss aktiviert sein</li>
-            </ul>
-
-            <h3>Verbraucht die App viel Akku?</h3>
-            <p>Nein. PlaceRemind nutzt die System-Geofencing-APIs von iOS, die ohne ständig aktives GPS arbeiten und sehr wenig Akku verbrauchen.</p>
-
-            <h3>Welche Einschränkungen hat die kostenlose Version?</h3>
-            <p>Die kostenlose Version unterstützt bis zu 3 aktive Standorte und zeigt nur die letzten 7 Tage des Verlaufs. In der kostenlosen Version werden Werbeanzeigen angezeigt.</p>
-
-            <h3>Was bietet Premium?</h3>
-            <ul>
-                <li>Unbegrenzte Standorte</li>
-                <li>Vollständiger Verlauf</li>
-                <li>Werbefreie Nutzung</li>
-            </ul>
-            <p>Eine 3-tägige kostenlose Testphase ist verfügbar. Monatliche und jährliche Abonnements werden angeboten.</p>
-
-            <h3>Wie kündige ich mein Premium-Abonnement?</h3>
-            <p>iPhone-Einstellungen → [Ihr Name] → Abonnements → PlaceRemind → "Abonnement kündigen". Die Abonnementverwaltung erfolgt vollständig über den App Store; eine Kündigung ist nicht in der App selbst möglich.</p>
-
-            <h3>Wie lösche ich meine Daten?</h3>
-            <p>Alle Daten werden nur auf Ihrem Gerät gespeichert. Sie können Ihre Standorte und Verlaufseinträge in der App löschen oder die App deinstallieren, um alle Daten dauerhaft zu entfernen.</p>
-
-            <h3>Werden meine Standortdaten geteilt?</h3>
-            <p>Nein. Ihre Standortdaten werden nie an einen Server gesendet oder mit Dritten geteilt. Weitere Informationen finden Sie oben im Tab "Datenschutz".</p>
-
-            <h2>Kontakt</h2>
-            <p>Bei Fragen, Feedback oder Problemen: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-            <p>Wenn Sie Ihr Gerätemodell und die iOS-Version angeben, können wir Ihnen schneller helfen.</p>
-        </div>
-
-        <div class="privacy-section">
-            <h1>PlaceRemind - Datenschutzrichtlinie</h1>
-            <p class="date">Letzte Aktualisierung: 5. April 2026</p>
-
-            <h2>Übersicht</h2>
-            <p>PlaceRemind ist eine App, die Ihre Ein- und Austritte an festgelegten Standorten verfolgt. Wir schätzen Ihre Privatsphäre.</p>
-
-            <h2>Erfasste Daten</h2>
-            <p>Die App erfasst folgende Daten:</p>
-            <ul>
-                <li><strong>Standortdaten:</strong> Ein-/Austrittsaufzeichnungen für Ihre festgelegten Bereiche (nur auf Ihrem Gerät gespeichert)</li>
-                <li><strong>Benutzereinstellungen:</strong> Design- und App-Einstellungen (nur auf Ihrem Gerät gespeichert)</li>
-                <li><strong>Werbedaten:</strong> Anonyme Nutzungsdaten für In-App-Werbung (können mit dem Werbeanbieter geteilt werden)</li>
-            </ul>
-
-            <h2>Datenspeicherung</h2>
-            <p>Alle Ihre Daten werden nur auf Ihrem Gerät gespeichert. Keine Daten werden an externe Server gesendet oder in der Cloud gespeichert. Beim Löschen der App werden alle Ihre Daten dauerhaft gelöscht.</p>
-
-            <h2>Standortdaten</h2>
-            <p>Ihre Standortberechtigung wird ausschließlich für die Bereichsüberwachung (Geofencing) verwendet. Ihre Standortdaten:</p>
-            <ul>
-                <li>Werden nur auf Ihrem Gerät verarbeitet</li>
-                <li>Werden mit keinem Dritten geteilt</li>
-                <li>Werden an keinen Server gesendet</li>
-                <li>Werden nicht für Werbung oder Analysen verwendet</li>
-            </ul>
-
-            <h2>Werbung und Weitergabe an Dritte</h2>
-            <p>Die App zeigt Werbung über Google AdMob an. Anonyme Werbedaten können mit Google geteilt werden. Ihre Standortdaten werden mit keinem Dritten geteilt.</p>
-            <p>Für die Werbenachverfolgung wird die App-Tracking-Transparenz (ATT) Berechtigung angefordert. Sie können diese Berechtigung jederzeit in Ihren Geräteeinstellungen ändern.</p>
-
-            <h2>Benutzerrechte</h2>
-            <p>Sie können jederzeit:</p>
-            <ul>
-                <li>Die Standortberechtigung in Ihren Geräteeinstellungen widerrufen</li>
-                <li>Alle gespeicherten Standorte und Verlaufsdaten in der App löschen</li>
-                <li>Alle Ihre Daten dauerhaft entfernen, indem Sie die App löschen</li>
-            </ul>
-
-            <h2>Kontakt</h2>
-            <p>Bei Fragen: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-
-            <h2>Änderungen</h2>
-            <p>Diese Datenschutzrichtlinie kann von Zeit zu Zeit aktualisiert werden. Die aktuelle Version ist immer in der App und auf dieser Seite zugänglich.</p>
-        </div>
-    </div>
-
-    <!-- French -->
-    <div id="fr" class="lang-section">
-        <div class="support-section">
-            <h1>PlaceRemind - Assistance</h1>
-
-            <h2>À propos</h2>
-            <p>PlaceRemind est une application de rappel basée sur la localisation qui suit automatiquement vos entrées et sorties dans les lieux que vous définissez. Recevez une notification lorsque vous arrivez ou quittez votre domicile, votre travail ou tout autre lieu, et consultez tout votre historique au même endroit.</p>
-
-            <h2>Comment l'utiliser</h2>
-            <ul>
-                <li><strong>Ajouter un lieu :</strong> Dans l'onglet "Lieux", appuyez sur + pour placer une épingle sur la carte et définissez un nom et un rayon.</li>
-                <li><strong>Notifications :</strong> Vous recevez automatiquement une notification lorsque vous entrez dans une zone ou la quittez.</li>
-                <li><strong>Historique :</strong> Consultez tous vos enregistrements d'entrée/sortie dans l'onglet "Historique".</li>
-                <li><strong>Réglages :</strong> Modifiez le thème, la langue et les autres préférences dans l'onglet "Réglages".</li>
-            </ul>
-
-            <h2>Questions fréquentes</h2>
-
-            <h3>Je ne reçois pas de notifications. Que faire ?</h3>
-            <p>Pour que PlaceRemind fonctionne en arrière-plan, vérifiez ce qui suit :</p>
-            <ul>
-                <li>Réglages de l'appareil → PlaceRemind → Localisation : doit être réglé sur <strong>"Toujours"</strong></li>
-                <li>Réglages de l'appareil → PlaceRemind → Notifications : doivent être autorisées</li>
-                <li>Réglages de l'appareil → Général → Actualisation en arrière-plan : doit être activée</li>
-            </ul>
-
-            <h3>L'application consomme-t-elle beaucoup de batterie ?</h3>
-            <p>Non. PlaceRemind utilise les API de geofencing du système iOS, qui fonctionnent sans maintenir le GPS actif en permanence et consomment très peu de batterie.</p>
-
-            <h3>Quelles sont les limites de la version gratuite ?</h3>
-            <p>La version gratuite prend en charge jusqu'à 3 lieux actifs et n'affiche que les 7 derniers jours d'historique. Des publicités sont affichées dans la version gratuite.</p>
-
-            <h3>Que propose Premium ?</h3>
-            <ul>
-                <li>Lieux illimités</li>
-                <li>Accès à tout l'historique</li>
-                <li>Sans publicité</li>
-            </ul>
-            <p>Une période d'essai gratuite de 3 jours est disponible. Des abonnements mensuels ou annuels sont proposés.</p>
-
-            <h3>Comment annuler mon abonnement Premium ?</h3>
-            <p>Réglages iPhone → [Votre nom] → Abonnements → PlaceRemind → "Annuler l'abonnement". La gestion des abonnements se fait entièrement via l'App Store ; l'annulation ne peut pas être effectuée depuis l'application.</p>
-
-            <h3>Comment supprimer mes données ?</h3>
-            <p>Toutes les données sont stockées uniquement sur votre appareil. Vous pouvez supprimer vos lieux et l'historique depuis l'application, ou désinstaller l'application pour supprimer définitivement toutes les données.</p>
-
-            <h3>Mes données de localisation sont-elles partagées ?</h3>
-            <p>Non. Vos données de localisation ne sont jamais envoyées à un serveur ni partagées avec un tiers. Voir l'onglet "Confidentialité" ci-dessus pour plus de détails.</p>
-
-            <h2>Contact</h2>
-            <p>Pour toute question, retour ou signalement de problème : <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-            <p>Indiquer votre modèle d'appareil et votre version d'iOS nous aide à vous répondre plus rapidement.</p>
-        </div>
-
-        <div class="privacy-section">
-            <h1>PlaceRemind - Politique de confidentialité</h1>
-            <p class="date">Dernière mise à jour : 5 avril 2026</p>
-
-            <h2>Aperçu</h2>
-            <p>PlaceRemind est une application qui suit vos entrées et sorties des emplacements définis. Nous attachons de l'importance à votre vie privée.</p>
-
-            <h2>Données collectées</h2>
-            <p>L'application collecte les données suivantes :</p>
-            <ul>
-                <li><strong>Données de localisation :</strong> Enregistrements d'entrée/sortie pour vos zones définies (stockées uniquement sur votre appareil)</li>
-                <li><strong>Préférences utilisateur :</strong> Thème et paramètres de l'application (stockés uniquement sur votre appareil)</li>
-                <li><strong>Données publicitaires :</strong> Données d'utilisation anonymes pour les publicités intégrées (peuvent être partagées avec le fournisseur de publicité)</li>
-            </ul>
-
-            <h2>Stockage des données</h2>
-            <p>Toutes vos données sont stockées uniquement sur votre appareil. Aucune donnée n'est envoyée à un serveur externe ni stockée dans le cloud. Lorsque vous supprimez l'application, toutes vos données sont définitivement supprimées.</p>
-
-            <h2>Données de localisation</h2>
-            <p>Votre autorisation de localisation est utilisée uniquement pour le suivi de zone (geofencing). Vos données de localisation :</p>
-            <ul>
-                <li>Sont traitées uniquement sur votre appareil</li>
-                <li>Ne sont partagées avec aucun tiers</li>
-                <li>Ne sont envoyées à aucun serveur</li>
-                <li>Ne sont pas utilisées à des fins publicitaires ou analytiques</li>
-            </ul>
-
-            <h2>Publicités et partage avec des tiers</h2>
-            <p>L'application affiche des publicités via Google AdMob. Des données publicitaires anonymes peuvent être partagées avec Google. Vos données de localisation ne sont partagées avec aucun tiers.</p>
-            <p>L'autorisation de transparence du suivi des applications (ATT) est demandée pour le suivi publicitaire. Vous pouvez modifier cette autorisation à tout moment dans les paramètres de votre appareil.</p>
-
-            <h2>Droits des utilisateurs</h2>
-            <p>À tout moment, vous pouvez :</p>
-            <ul>
-                <li>Révoquer l'autorisation de localisation dans les paramètres de votre appareil</li>
-                <li>Supprimer tous les emplacements enregistrés et les données d'historique depuis l'application</li>
-                <li>Supprimer définitivement toutes vos données en supprimant l'application</li>
-            </ul>
-
-            <h2>Contact</h2>
-            <p>Pour toute question : <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-
-            <h2>Modifications</h2>
-            <p>Cette politique de confidentialité peut être mise à jour de temps en temps. La version actuelle est toujours accessible depuis l'application et sur cette page.</p>
-        </div>
-    </div>
-
-    <!-- Spanish -->
-    <div id="es" class="lang-section">
-        <div class="support-section">
-            <h1>PlaceRemind - Soporte</h1>
-
-            <h2>Acerca de</h2>
-            <p>PlaceRemind es una aplicación de recordatorios basada en la ubicación que rastrea automáticamente tus entradas y salidas de los lugares que defines. Recibe una notificación al llegar o salir de casa, el trabajo o cualquier otro lugar, y consulta todo tu historial en un solo sitio.</p>
-
-            <h2>Cómo usarla</h2>
-            <ul>
-                <li><strong>Añadir una ubicación:</strong> En la pestaña "Ubicaciones", toca + para colocar un pin en el mapa y definir un nombre y un radio.</li>
-                <li><strong>Notificaciones:</strong> Recibirás una notificación automáticamente al entrar o salir de una zona.</li>
-                <li><strong>Historial:</strong> Consulta todos los registros de entrada/salida en la pestaña "Historial".</li>
-                <li><strong>Ajustes:</strong> Cambia el tema, idioma y otras preferencias en la pestaña "Ajustes".</li>
-            </ul>
-
-            <h2>Preguntas frecuentes</h2>
-
-            <h3>No recibo notificaciones. ¿Qué puedo hacer?</h3>
-            <p>Para que PlaceRemind funcione en segundo plano, comprueba lo siguiente:</p>
-            <ul>
-                <li>Ajustes del dispositivo → PlaceRemind → Ubicación: debe estar en <strong>"Siempre"</strong></li>
-                <li>Ajustes del dispositivo → PlaceRemind → Notificaciones: deben estar permitidas</li>
-                <li>Ajustes del dispositivo → General → Actualización en segundo plano: debe estar activada</li>
-            </ul>
-
-            <h3>¿Consume mucha batería?</h3>
-            <p>No. PlaceRemind utiliza las API de geofencing del sistema iOS, que funcionan sin mantener el GPS activo de forma continua y consumen muy poca batería.</p>
-
-            <h3>¿Cuáles son los límites de la versión gratuita?</h3>
-            <p>La versión gratuita admite hasta 3 ubicaciones activas y solo muestra los últimos 7 días de historial. En la versión gratuita se muestran anuncios.</p>
-
-            <h3>¿Qué ofrece Premium?</h3>
-            <ul>
-                <li>Ubicaciones ilimitadas</li>
-                <li>Acceso al historial completo</li>
-                <li>Sin anuncios</li>
-            </ul>
-            <p>Hay disponible una prueba gratuita de 3 días. Se ofrecen suscripciones mensuales o anuales.</p>
-
-            <h3>¿Cómo cancelo mi suscripción Premium?</h3>
-            <p>Ajustes del iPhone → [Tu nombre] → Suscripciones → PlaceRemind → "Cancelar suscripción". La gestión de suscripciones se realiza completamente a través del App Store; la cancelación no se hace desde la app.</p>
-
-            <h3>¿Cómo elimino mis datos?</h3>
-            <p>Todos los datos se almacenan solo en tu dispositivo. Puedes eliminar tus ubicaciones e historial desde la app, o desinstalar la app para eliminar todos los datos de forma permanente.</p>
-
-            <h3>¿Se comparten mis datos de ubicación?</h3>
-            <p>No. Tus datos de ubicación nunca se envían a ningún servidor ni se comparten con terceros. Consulta la pestaña "Privacidad" arriba para más detalles.</p>
-
-            <h2>Contacto</h2>
-            <p>Para preguntas, comentarios o reportar un problema: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-            <p>Incluir el modelo de tu dispositivo y la versión de iOS nos ayuda a responderte más rápido.</p>
-        </div>
-
-        <div class="privacy-section">
-            <h1>PlaceRemind - Política de privacidad</h1>
-            <p class="date">Última actualización: 5 de abril de 2026</p>
-
-            <h2>Descripción general</h2>
-            <p>PlaceRemind es una aplicación que rastrea tus entradas y salidas de ubicaciones definidas. Valoramos tu privacidad.</p>
-
-            <h2>Datos recopilados</h2>
-            <p>La aplicación recopila los siguientes datos:</p>
-            <ul>
-                <li><strong>Datos de ubicación:</strong> Registros de entrada/salida de tus áreas definidas (almacenados solo en tu dispositivo)</li>
-                <li><strong>Preferencias del usuario:</strong> Tema y ajustes de la aplicación (almacenados solo en tu dispositivo)</li>
-                <li><strong>Datos de anuncios:</strong> Datos de uso anónimos para anuncios en la aplicación (pueden compartirse con el proveedor de anuncios)</li>
-            </ul>
-
-            <h2>Almacenamiento de datos</h2>
-            <p>Todos tus datos se almacenan solo en tu dispositivo. Ningún dato se envía a servidores externos ni se almacena en la nube. Al eliminar la aplicación, todos tus datos se eliminan permanentemente.</p>
-
-            <h2>Datos de ubicación</h2>
-            <p>Tu permiso de ubicación se usa únicamente para el seguimiento de áreas (geofencing). Tus datos de ubicación:</p>
-            <ul>
-                <li>Se procesan solo en tu dispositivo</li>
-                <li>No se comparten con terceros</li>
-                <li>No se envían a ningún servidor</li>
-                <li>No se usan con fines publicitarios o analíticos</li>
-            </ul>
-
-            <h2>Anuncios y uso compartido con terceros</h2>
-            <p>La aplicación muestra anuncios a través de Google AdMob. Los datos publicitarios anónimos pueden compartirse con Google. Tus datos de ubicación no se comparten con terceros.</p>
-            <p>Se solicita el permiso de Transparencia de Seguimiento de Apps (ATT) para el seguimiento publicitario. Puedes cambiar este permiso en cualquier momento en la configuración de tu dispositivo.</p>
-
-            <h2>Derechos del usuario</h2>
-            <p>En cualquier momento puedes:</p>
-            <ul>
-                <li>Revocar el permiso de ubicación desde la configuración de tu dispositivo</li>
-                <li>Eliminar todas las ubicaciones guardadas y los datos del historial desde la aplicación</li>
-                <li>Eliminar permanentemente todos tus datos eliminando la aplicación</li>
-            </ul>
-
-            <h2>Contacto</h2>
-            <p>Para consultas: <a href="mailto:placeremind@stopcu.com.tr">placeremind@stopcu.com.tr</a></p>
-
-            <h2>Cambios</h2>
-            <p>Esta política de privacidad puede actualizarse de vez en cuando. La versión actual siempre está accesible desde la aplicación y en esta página.</p>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        var supportedLangs = ['tr','en','de','fr','es'];
-        var currentLang = 'en';
-        var currentView = 'support';
+    (function() {
+        var SUPPORTED_LANGS = ['en','tr','de','fr','es'];
+        var THEMES = ['auto','light','dark'];
 
-        var titles = {
-            support: {
-                tr: 'PlaceRemind - Destek',
-                en: 'PlaceRemind - Support',
-                de: 'PlaceRemind - Hilfe',
-                fr: 'PlaceRemind - Assistance',
-                es: 'PlaceRemind - Soporte'
+        var STRINGS = {
+            en: {
+                nav_features:'Features', nav_pricing:'Pricing', nav_support:'Support', nav_privacy:'Privacy', nav_contact:'Contact', nav_cta:'App Store',
+                contact_pill:'Contact', contact_title:'Get in touch', contact_sub:'Requests, suggestions and complaints all go to the same place. Tap the button below to start an email.', contact_tip:'Including your device model and iOS version helps us help you faster.',
+                page_title_contact:'PlaceRemind — Contact',
+                theme_auto:'System', theme_light:'Light', theme_dark:'Dark',
+                hero_eyebrow:'iOS Location Reminders',
+                hero_title:'Never miss arriving home — or leaving work.',
+                hero_sub:'PlaceRemind quietly tracks the places that matter and notifies you the moment you arrive or leave. All on-device, with battery-friendly geofencing.',
+                hero_cta_appstore:'Download on the App Store',
+                hero_cta_features:'See features',
+                f_map_eyebrow:'On the map', f_map_title:'Your places, drawn as zones.', f_map_desc:'Every geofence appears as a circle on the map. Custom icons for Home, Work and Other so you spot them in a glance.',
+                f_loc_eyebrow:'Locations', f_loc_title:'Up to 20 places, fully under control.', f_loc_desc:'Toggle areas on or off, edit name, radius and icon, filter by category. Free keeps 3 active; Premium unlocks all 20.',
+                f_history_eyebrow:'History', f_history_title:'A clear timeline of every entry and exit.', f_history_desc:'Filter by date, area or event type. Free shows the last 7 days; Premium gives full history forever.',
+                f_add_eyebrow:'Add a place', f_add_title:'Drop a pin in seconds.', f_add_desc:'Search for an address or tap on the map. Pick from Home, Work or Other presets and set a radius from 50 to 500 metres.',
+                f_settings_eyebrow:'Designed for you', f_settings_title:'5 languages. Light & dark. Truly private.', f_settings_desc:'Switch language without restarting the app. System theme support. Your data never leaves the device.',
+                pricing_eyebrow:'Pricing', pricing_title:'Start free. Upgrade when you need more.', pricing_sub:'No accounts, no cloud. Subscriptions are managed entirely through the App Store and you can cancel anytime.',
+                pricing_free_name:'Free', pricing_free_price:'$0', pricing_free_period:'forever',
+                pricing_free_1:'3 active locations', pricing_free_2:'Last 7 days of history', pricing_free_3:'Battery-friendly geofencing', pricing_free_4:'Includes ads',
+                pricing_premium_name:'Premium', pricing_premium_price:'3-day free trial', pricing_premium_period:'monthly or yearly',
+                pricing_premium_1:'Up to 20 active locations', pricing_premium_2:'Full history, unlimited', pricing_premium_3:'Ad-free experience', pricing_premium_4:'Cancel anytime in App Store',
+                cta_title:'Ready to never forget a place again?', cta_sub:'PlaceRemind is available on iPhone running iOS 17 or later.', cta_button:'Download on the App Store',
+                footer_contact:'Questions?', footer_rights:'All rights reserved.',
+                page_title_home:'PlaceRemind — Location reminders that just work',
+                page_title_support:'PlaceRemind — Support', page_title_privacy:'PlaceRemind — Privacy Policy'
             },
-            privacy: {
-                tr: 'PlaceRemind - Gizlilik Politikası',
-                en: 'PlaceRemind - Privacy Policy',
-                de: 'PlaceRemind - Datenschutzrichtlinie',
-                fr: 'PlaceRemind - Politique de confidentialité',
-                es: 'PlaceRemind - Política de privacidad'
+            tr: {
+                nav_features:'Özellikler', nav_pricing:'Fiyatlandırma', nav_support:'Destek', nav_privacy:'Gizlilik', nav_contact:'İletişim', nav_cta:'App Store',
+                contact_pill:'İletişim', contact_title:'Bizimle iletişime geçin', contact_sub:'İstek, öneri ve şikayetlerin hepsi aynı adrese ulaşır. Aşağıdaki düğmeye dokunarak e-posta başlatabilirsiniz.', contact_tip:'E-postanıza cihaz modelinizi ve iOS sürümünüzü eklerseniz size daha hızlı yardımcı olabiliriz.',
+                page_title_contact:'PlaceRemind — İletişim',
+                theme_auto:'Sistem', theme_light:'Açık', theme_dark:'Koyu',
+                hero_eyebrow:'iOS Konum Hatırlatma',
+                hero_title:'Eve vardığınızı kaçırmayın, işten ayrıldığınızda haberiniz olsun.',
+                hero_sub:'PlaceRemind sizin için önemli yerleri sessizce takip eder ve gelir gelmez ya da ayrılır ayrılmaz size bildirim gönderir. Tamamen cihazda, düşük pil tüketimli geofencing ile.',
+                hero_cta_appstore:'App Store\'da İndir',
+                hero_cta_features:'Özellikleri gör',
+                f_map_eyebrow:'Harita üzerinde', f_map_title:'Yerleriniz, alanlar halinde haritada.', f_map_desc:'Her geofence haritada bir daire olarak görünür. Ev, İş ve Diğer için özel ikonlarla bir bakışta ayırt edersiniz.',
+                f_loc_eyebrow:'Konumlar', f_loc_title:'20 konuma kadar, tam kontrol sizde.', f_loc_desc:'Alanları aç/kapa, isim, yarıçap ve ikon değiştir, kategoriye göre filtrele. Ücretsiz 3 aktif tutar, Premium 20\'sini açar.',
+                f_history_eyebrow:'Geçmiş', f_history_title:'Her giriş ve çıkışın net bir zaman çizelgesi.', f_history_desc:'Tarih, alan veya olay tipine göre filtreleyin. Ücretsiz son 7 günü gösterir, Premium tüm geçmişi sınırsız sunar.',
+                f_add_eyebrow:'Konum ekle', f_add_title:'Saniyeler içinde bir nokta bırakın.', f_add_desc:'Adres arayın veya haritaya dokunun. Ev, İş ya da Diğer hazır şablonlarından birini seçin, 50 ile 500 metre arasında yarıçap belirleyin.',
+                f_settings_eyebrow:'Sizin için tasarlandı', f_settings_title:'5 dil. Açık ve koyu mod. Gerçek anlamda gizli.', f_settings_desc:'Uygulamayı yeniden başlatmadan dil değiştirin. Sistem teması desteği. Verileriniz cihazınızdan asla çıkmaz.',
+                pricing_eyebrow:'Fiyatlandırma', pricing_title:'Ücretsiz başlayın. İhtiyaç duyduğunuzda yükseltin.', pricing_sub:'Hesap yok, bulut yok. Abonelikler tamamen App Store üzerinden yönetilir ve istediğiniz zaman iptal edebilirsiniz.',
+                pricing_free_name:'Ücretsiz', pricing_free_price:'₺0', pricing_free_period:'sonsuza kadar',
+                pricing_free_1:'3 aktif konum', pricing_free_2:'Son 7 günlük geçmiş', pricing_free_3:'Düşük pil tüketimli geofencing', pricing_free_4:'Reklamlı',
+                pricing_premium_name:'Premium', pricing_premium_price:'3 gün ücretsiz deneme', pricing_premium_period:'aylık veya yıllık',
+                pricing_premium_1:'20 aktif konuma kadar', pricing_premium_2:'Tüm geçmiş, sınırsız', pricing_premium_3:'Reklamsız deneyim', pricing_premium_4:'App Store\'dan istediğiniz zaman iptal',
+                cta_title:'Bir yeri bir daha unutmamaya hazır mısınız?', cta_sub:'PlaceRemind iOS 17 veya üstü iPhone\'larda kullanılabilir.', cta_button:'App Store\'da İndir',
+                footer_contact:'Soru mu var?', footer_rights:'Tüm hakları saklıdır.',
+                page_title_home:'PlaceRemind — Çalışan konum hatırlatmaları',
+                page_title_support:'PlaceRemind — Destek', page_title_privacy:'PlaceRemind — Gizlilik Politikası'
+            },
+            de: {
+                nav_features:'Funktionen', nav_pricing:'Preise', nav_support:'Hilfe', nav_privacy:'Datenschutz', nav_contact:'Kontakt', nav_cta:'App Store',
+                contact_pill:'Kontakt', contact_title:'Schreiben Sie uns', contact_sub:'Anfragen, Vorschläge und Beschwerden gehen alle an dieselbe Adresse. Tippen Sie auf den Button unten, um eine E-Mail zu beginnen.', contact_tip:'Wenn Sie Ihr Gerätemodell und die iOS-Version angeben, können wir Ihnen schneller helfen.',
+                page_title_contact:'PlaceRemind — Kontakt',
+                theme_auto:'System', theme_light:'Hell', theme_dark:'Dunkel',
+                hero_eyebrow:'iOS Standort-Erinnerungen',
+                hero_title:'Verpassen Sie nie wieder die Ankunft zu Hause oder den Feierabend.',
+                hero_sub:'PlaceRemind verfolgt im Hintergrund die Orte, die zählen, und benachrichtigt Sie genau im Moment des Ankommens oder Verlassens. Komplett auf dem Gerät, mit akkuschonendem Geofencing.',
+                hero_cta_appstore:'Im App Store laden',
+                hero_cta_features:'Funktionen ansehen',
+                f_map_eyebrow:'Auf der Karte', f_map_title:'Ihre Orte als Zonen auf der Karte.', f_map_desc:'Jeder Geofence erscheint als Kreis auf der Karte. Eigene Symbole für Zuhause, Arbeit und Andere helfen beim schnellen Erkennen.',
+                f_loc_eyebrow:'Standorte', f_loc_title:'Bis zu 20 Orte, vollständig in Ihrer Hand.', f_loc_desc:'Bereiche aktivieren oder deaktivieren, Name, Radius und Symbol ändern, nach Kategorie filtern. Kostenlos: 3 aktive; Premium: alle 20.',
+                f_history_eyebrow:'Verlauf', f_history_title:'Eine klare Zeitleiste jedes Ein- und Austritts.', f_history_desc:'Filtern nach Datum, Bereich oder Ereignistyp. Kostenlos zeigt die letzten 7 Tage, Premium gibt unbegrenzten Verlauf.',
+                f_add_eyebrow:'Ort hinzufügen', f_add_title:'In Sekunden eine Markierung setzen.', f_add_desc:'Adresse suchen oder auf die Karte tippen. Vorlagen für Zuhause, Arbeit oder Andere wählen und Radius zwischen 50 und 500 Metern festlegen.',
+                f_settings_eyebrow:'Für Sie gemacht', f_settings_title:'5 Sprachen. Hell und dunkel. Wirklich privat.', f_settings_desc:'Sprache ohne Neustart wechseln. Systemdesign-Unterstützung. Ihre Daten verlassen nie das Gerät.',
+                pricing_eyebrow:'Preise', pricing_title:'Kostenlos starten. Bei Bedarf upgraden.', pricing_sub:'Keine Konten, keine Cloud. Abonnements werden vollständig über den App Store verwaltet und können jederzeit gekündigt werden.',
+                pricing_free_name:'Kostenlos', pricing_free_price:'0 €', pricing_free_period:'für immer',
+                pricing_free_1:'3 aktive Standorte', pricing_free_2:'Letzte 7 Tage Verlauf', pricing_free_3:'Akkuschonendes Geofencing', pricing_free_4:'Mit Werbung',
+                pricing_premium_name:'Premium', pricing_premium_price:'3 Tage kostenlos testen', pricing_premium_period:'monatlich oder jährlich',
+                pricing_premium_1:'Bis zu 20 aktive Standorte', pricing_premium_2:'Vollständiger, unbegrenzter Verlauf', pricing_premium_3:'Werbefreie Nutzung', pricing_premium_4:'Jederzeit im App Store kündigen',
+                cta_title:'Bereit, nie wieder einen Ort zu vergessen?', cta_sub:'PlaceRemind ist auf iPhones mit iOS 17 oder neuer verfügbar.', cta_button:'Im App Store laden',
+                footer_contact:'Fragen?', footer_rights:'Alle Rechte vorbehalten.',
+                page_title_home:'PlaceRemind — Standort-Erinnerungen, die einfach funktionieren',
+                page_title_support:'PlaceRemind — Hilfe', page_title_privacy:'PlaceRemind — Datenschutzrichtlinie'
+            },
+            fr: {
+                nav_features:'Fonctionnalités', nav_pricing:'Tarifs', nav_support:'Assistance', nav_privacy:'Confidentialité', nav_contact:'Contact', nav_cta:'App Store',
+                contact_pill:'Contact', contact_title:'Contactez-nous', contact_sub:'Demandes, suggestions et réclamations arrivent toutes au même endroit. Appuyez sur le bouton ci-dessous pour démarrer un e-mail.', contact_tip:'Indiquer votre modèle d\'appareil et votre version d\'iOS nous aide à vous répondre plus rapidement.',
+                page_title_contact:'PlaceRemind — Contact',
+                theme_auto:'Système', theme_light:'Clair', theme_dark:'Sombre',
+                hero_eyebrow:'Rappels de lieux iOS',
+                hero_title:'Ne ratez plus une arrivée à la maison, ni un départ du travail.',
+                hero_sub:'PlaceRemind suit discrètement les lieux qui comptent et vous notifie au moment exact où vous arrivez ou partez. Entièrement sur l\'appareil, avec un geofencing économe en batterie.',
+                hero_cta_appstore:'Télécharger sur l\'App Store',
+                hero_cta_features:'Voir les fonctionnalités',
+                f_map_eyebrow:'Sur la carte', f_map_title:'Vos lieux, dessinés en zones.', f_map_desc:'Chaque geofence apparaît comme un cercle sur la carte. Des icônes personnalisées pour Maison, Travail et Autre, repérables d\'un coup d\'œil.',
+                f_loc_eyebrow:'Lieux', f_loc_title:'Jusqu\'à 20 lieux, totalement sous contrôle.', f_loc_desc:'Activez ou désactivez les zones, modifiez nom, rayon et icône, filtrez par catégorie. La version gratuite garde 3 actifs, Premium en débloque 20.',
+                f_history_eyebrow:'Historique', f_history_title:'Une chronologie claire de chaque entrée et sortie.', f_history_desc:'Filtrez par date, zone ou type d\'événement. La version gratuite montre les 7 derniers jours, Premium offre tout l\'historique sans limite.',
+                f_add_eyebrow:'Ajouter un lieu', f_add_title:'Posez une épingle en quelques secondes.', f_add_desc:'Recherchez une adresse ou tapez sur la carte. Choisissez parmi les modèles Maison, Travail ou Autre et définissez un rayon entre 50 et 500 mètres.',
+                f_settings_eyebrow:'Pensé pour vous', f_settings_title:'5 langues. Clair et sombre. Vraiment privé.', f_settings_desc:'Changez de langue sans relancer l\'application. Support du thème système. Vos données ne quittent jamais l\'appareil.',
+                pricing_eyebrow:'Tarifs', pricing_title:'Commencez gratuitement. Passez à plus quand vous en avez besoin.', pricing_sub:'Pas de compte, pas de cloud. Les abonnements sont gérés entièrement via l\'App Store et peuvent être annulés à tout moment.',
+                pricing_free_name:'Gratuit', pricing_free_price:'0 €', pricing_free_period:'pour toujours',
+                pricing_free_1:'3 lieux actifs', pricing_free_2:'7 derniers jours d\'historique', pricing_free_3:'Geofencing économe en batterie', pricing_free_4:'Avec publicités',
+                pricing_premium_name:'Premium', pricing_premium_price:'Essai gratuit de 3 jours', pricing_premium_period:'mensuel ou annuel',
+                pricing_premium_1:'Jusqu\'à 20 lieux actifs', pricing_premium_2:'Historique complet, sans limite', pricing_premium_3:'Sans publicité', pricing_premium_4:'Annulation à tout moment dans l\'App Store',
+                cta_title:'Prêt à ne plus jamais oublier un lieu ?', cta_sub:'PlaceRemind est disponible sur iPhone avec iOS 17 ou ultérieur.', cta_button:'Télécharger sur l\'App Store',
+                footer_contact:'Une question ?', footer_rights:'Tous droits réservés.',
+                page_title_home:'PlaceRemind — Des rappels de lieux qui fonctionnent',
+                page_title_support:'PlaceRemind — Assistance', page_title_privacy:'PlaceRemind — Politique de confidentialité'
+            },
+            es: {
+                nav_features:'Funciones', nav_pricing:'Precios', nav_support:'Soporte', nav_privacy:'Privacidad', nav_contact:'Contacto', nav_cta:'App Store',
+                contact_pill:'Contacto', contact_title:'Ponte en contacto', contact_sub:'Las solicitudes, sugerencias y quejas llegan al mismo lugar. Toca el botón de abajo para iniciar un correo.', contact_tip:'Incluir el modelo de tu dispositivo y la versión de iOS nos ayuda a responderte más rápido.',
+                page_title_contact:'PlaceRemind — Contacto',
+                theme_auto:'Sistema', theme_light:'Claro', theme_dark:'Oscuro',
+                hero_eyebrow:'Recordatorios de ubicación para iOS',
+                hero_title:'No te pierdas llegar a casa ni salir del trabajo.',
+                hero_sub:'PlaceRemind sigue silenciosamente los lugares que importan y te avisa justo al llegar o salir. Todo en el dispositivo, con geofencing eficiente en batería.',
+                hero_cta_appstore:'Descargar en App Store',
+                hero_cta_features:'Ver funciones',
+                f_map_eyebrow:'En el mapa', f_map_title:'Tus lugares, dibujados como zonas.', f_map_desc:'Cada geofence aparece como un círculo en el mapa. Iconos propios para Casa, Trabajo y Otros para reconocerlos al instante.',
+                f_loc_eyebrow:'Ubicaciones', f_loc_title:'Hasta 20 lugares, totalmente bajo tu control.', f_loc_desc:'Activa o desactiva zonas, edita nombre, radio e icono, filtra por categoría. La versión gratuita mantiene 3 activos; Premium desbloquea las 20.',
+                f_history_eyebrow:'Historial', f_history_title:'Una línea de tiempo clara de cada entrada y salida.', f_history_desc:'Filtra por fecha, zona o tipo de evento. La versión gratuita muestra los últimos 7 días; Premium ofrece historial completo sin límite.',
+                f_add_eyebrow:'Añadir un lugar', f_add_title:'Coloca un pin en segundos.', f_add_desc:'Busca una dirección o toca en el mapa. Elige entre las plantillas Casa, Trabajo u Otro y define un radio de 50 a 500 metros.',
+                f_settings_eyebrow:'Pensado para ti', f_settings_title:'5 idiomas. Claro y oscuro. Realmente privado.', f_settings_desc:'Cambia de idioma sin reiniciar la app. Soporte del tema del sistema. Tus datos nunca salen del dispositivo.',
+                pricing_eyebrow:'Precios', pricing_title:'Empieza gratis. Pasa a más cuando lo necesites.', pricing_sub:'Sin cuentas, sin nube. Las suscripciones se gestionan totalmente desde el App Store y puedes cancelar cuando quieras.',
+                pricing_free_name:'Gratis', pricing_free_price:'0 €', pricing_free_period:'para siempre',
+                pricing_free_1:'3 ubicaciones activas', pricing_free_2:'Últimos 7 días de historial', pricing_free_3:'Geofencing eficiente en batería', pricing_free_4:'Con anuncios',
+                pricing_premium_name:'Premium', pricing_premium_price:'3 días de prueba gratis', pricing_premium_period:'mensual o anual',
+                pricing_premium_1:'Hasta 20 ubicaciones activas', pricing_premium_2:'Historial completo, sin límite', pricing_premium_3:'Sin anuncios', pricing_premium_4:'Cancela cuando quieras en App Store',
+                cta_title:'¿Listo para no volver a olvidar un lugar?', cta_sub:'PlaceRemind está disponible en iPhone con iOS 17 o superior.', cta_button:'Descargar en App Store',
+                footer_contact:'¿Preguntas?', footer_rights:'Todos los derechos reservados.',
+                page_title_home:'PlaceRemind — Recordatorios de ubicación que funcionan',
+                page_title_support:'PlaceRemind — Soporte', page_title_privacy:'PlaceRemind — Política de privacidad'
             }
         };
 
-        function applyView() {
-            document.querySelectorAll('.support-section').forEach(function(el) { el.classList.remove('active'); });
-            document.querySelectorAll('.privacy-section').forEach(function(el) { el.classList.remove('active'); });
-            var sections = document.querySelectorAll('#' + currentLang + ' .' + currentView + '-section');
-            sections.forEach(function(el) { el.classList.add('active'); });
+        var state = {
+            lang: 'en',
+            view: 'home',
+            theme: 'auto'
+        };
 
-            document.querySelectorAll('.view-switcher button').forEach(function(el) { el.classList.remove('active'); });
-            document.querySelector('[data-view="' + currentView + '"]').classList.add('active');
+        function applyI18n() {
+            var dict = STRINGS[state.lang] || STRINGS.en;
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (dict[key] != null) el.textContent = dict[key];
+            });
+            document.documentElement.lang = state.lang;
+            var titleKey = 'page_title_' + state.view;
+            document.title = dict[titleKey] || dict.page_title_home;
 
-            document.title = titles[currentView][currentLang];
-        }
+            // Theme button label reflects current setting
+            var themeKey = 'theme_' + state.theme;
+            var label = document.getElementById('themeLabel');
+            if (label) label.textContent = dict[themeKey] || dict.theme_auto;
 
-        function applyLang() {
-            document.querySelectorAll('.lang-section').forEach(function(el) { el.classList.remove('active'); });
-            document.querySelectorAll('.lang-switcher button').forEach(function(el) { el.classList.remove('active'); });
-            document.getElementById(currentLang).classList.add('active');
-            document.querySelector('[data-lang="' + currentLang + '"]').classList.add('active');
-            document.documentElement.lang = currentLang;
-
-            document.querySelectorAll('.view-switcher button').forEach(function(btn) {
-                var label = btn.getAttribute('data-label-' + currentLang);
-                if (label) btn.textContent = label;
+            // Switch screenshots to the right language
+            document.querySelectorAll('img.screen').forEach(function(img) {
+                var s = img.getAttribute('data-screen');
+                img.src = 'assets/screenshots/' + state.lang + '/' + s + '.png';
             });
 
-            applyView();
-            updateHash();
+            // Switch lang-block visibility (support/privacy docs)
+            document.querySelectorAll('.lang-block').forEach(function(b) {
+                b.classList.toggle('active', b.getAttribute('data-lang') === state.lang);
+            });
         }
 
-        function setLang(lang) {
-            currentLang = lang;
-            applyLang();
+        var lastAppliedView = null;
+        function applyView() {
+            ['home','support','privacy','contact'].forEach(function(v) {
+                var el = document.getElementById('view-' + v);
+                if (el) el.classList.toggle('active', v === state.view);
+            });
+            document.querySelectorAll('.nav-links a[data-route]').forEach(function(a) {
+                a.classList.toggle('active', a.getAttribute('data-route') === state.view);
+            });
+            if (lastAppliedView !== null && lastAppliedView !== state.view) {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+            }
+            lastAppliedView = state.view;
         }
 
-        function setView(view) {
-            currentView = view;
-            applyView();
-            updateHash();
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', state.theme);
+            var icon = document.getElementById('themeIcon');
+            if (icon) {
+                icon.textContent = state.theme === 'light' ? '☀' : state.theme === 'dark' ? '☾' : '◐';
+            }
         }
 
         function updateHash() {
-            history.replaceState(null, '', '#' + currentLang + '/' + currentView);
+            var hash = '#' + state.lang + '/' + state.view;
+            if (location.hash !== hash) history.replaceState(null, '', hash);
         }
 
-        function detectInitial() {
-            var hash = location.hash.replace('#', '');
-            var parts = hash.split('/');
-            var lang = parts[0];
-            var view = parts[1];
-
-            if (supportedLangs.indexOf(lang) !== -1) {
-                currentLang = lang;
-            } else {
-                var nav = (navigator.language || '').substring(0, 2).toLowerCase();
-                currentLang = supportedLangs.indexOf(nav) !== -1 ? nav : 'en';
-            }
-
-            if (view === 'support' || view === 'privacy') {
-                currentView = view;
-            } else {
-                currentView = 'support';
-            }
+        function parseHash() {
+            var h = (location.hash || '').replace('#','');
+            var parts = h.split('/');
+            if (parts[0] && SUPPORTED_LANGS.indexOf(parts[0]) !== -1) state.lang = parts[0];
+            if (parts[1] && ['home','support','privacy','contact'].indexOf(parts[1]) !== -1) state.view = parts[1];
         }
 
-        detectInitial();
-        applyLang();
+        function loadPrefs() {
+            try {
+                var lang = localStorage.getItem('pr_lang');
+                if (lang && SUPPORTED_LANGS.indexOf(lang) !== -1) state.lang = lang;
+                var theme = localStorage.getItem('pr_theme');
+                if (theme && THEMES.indexOf(theme) !== -1) state.theme = theme;
+            } catch (e) {}
+        }
+        function savePrefs() {
+            try {
+                localStorage.setItem('pr_lang', state.lang);
+                localStorage.setItem('pr_theme', state.theme);
+            } catch (e) {}
+        }
+
+        function setLang(lang) {
+            if (SUPPORTED_LANGS.indexOf(lang) === -1) return;
+            state.lang = lang;
+            applyI18n();
+            updateHash();
+            savePrefs();
+        }
+        function setView(view) {
+            if (['home','support','privacy','contact'].indexOf(view) === -1) return;
+            state.view = view;
+            applyView();
+            applyI18n(); // refresh title
+            updateHash();
+        }
+        function cycleTheme() {
+            var i = THEMES.indexOf(state.theme);
+            state.theme = THEMES[(i + 1) % THEMES.length];
+            applyTheme();
+            applyI18n();
+            savePrefs();
+        }
+
+        // Init
+        loadPrefs();
+        parseHash(); // hash overrides if present
+        applyTheme();
+        applyView();
+        applyI18n();
+        updateHash();
+
+        // Wire controls
+        var langSelect = document.getElementById('langSelect');
+        langSelect.value = state.lang;
+        langSelect.addEventListener('change', function(e) { setLang(e.target.value); });
+
+        document.getElementById('themeBtn').addEventListener('click', cycleTheme);
+
+        document.querySelectorAll('a[data-route]').forEach(function(a) {
+            a.addEventListener('click', function(ev) {
+                ev.preventDefault();
+                var route = a.getAttribute('data-route');
+                setView(route);
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+
+        // Internal anchor links (#features, #pricing): take over fully so they don't fight with hash routing
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            var href = a.getAttribute('href');
+            if (href === '#features' || href === '#pricing') {
+                a.addEventListener('click', function(ev) {
+                    ev.preventDefault();
+                    document.getElementById('navLinks').classList.remove('open');
+                    var doScroll = function() {
+                        var t = document.querySelector(href);
+                        if (!t) return;
+                        var headerH = document.querySelector('.nav').offsetHeight || 0;
+                        var top = t.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    };
+                    if (state.view !== 'home') {
+                        setView('home');
+                        setTimeout(doScroll, 30);
+                    } else {
+                        doScroll();
+                    }
+                });
+            }
+        });
+
+        // Mobile menu
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Hash change (back/forward)
+        window.addEventListener('hashchange', function() {
+            parseHash();
+            applyTheme();
+            applyView();
+            applyI18n();
+        });
+
+        // Reveal on scroll
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+        } else {
+            document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in'); });
+        }
+
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    })();
     </script>
 </body>
 </html>
