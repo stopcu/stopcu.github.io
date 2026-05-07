@@ -69,10 +69,10 @@
         }
 
         * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; overflow-x: hidden; }
+        html { scroll-behavior: smooth; overflow-x: clip; }
         body {
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: clip;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
@@ -112,7 +112,7 @@
         }
         .nav-links a:hover { background: var(--bg-soft); color: var(--text); text-decoration: none; }
         .nav-links a.active { color: var(--accent); }
-        .nav-controls { display: flex; align-items: center; gap: 8px; }
+        .nav-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; }
         .ctrl {
             background: transparent; border: 1px solid var(--border-strong); color: var(--text);
             padding: 6px 10px; border-radius: 8px; font-size: 13px; cursor: pointer;
@@ -1288,8 +1288,16 @@
         });
 
         // Mobile menu
-        document.getElementById('menuBtn').addEventListener('click', function() {
-            document.getElementById('navLinks').classList.toggle('open');
+        var menuBtn = document.getElementById('menuBtn');
+        var navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', function(ev) {
+            ev.stopPropagation();
+            navLinks.classList.toggle('open');
+        });
+        document.addEventListener('click', function(ev) {
+            if (!navLinks.classList.contains('open')) return;
+            if (navLinks.contains(ev.target) || menuBtn.contains(ev.target)) return;
+            navLinks.classList.remove('open');
         });
 
         // Hash change (back/forward)
